@@ -249,7 +249,7 @@ html, body{
 .whatsapp::after{
   content:'¿Necesitas Ayuda?';
   position:absolute;
-  left:64px;                 /* aparece a la derecha del ícono */
+  right:64px;                 /* aparece a la izquierda del ícono */
   top:6px;
   background:#fff;
   color:#1a1a1a;
@@ -466,3 +466,4 @@ html, body{
 @media (prefers-reduced-motion: reduce){
   .hero-slider{ transition:none; }
 }
+
