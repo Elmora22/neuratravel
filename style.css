@@ -124,19 +124,19 @@ body{
 
 /* Íconos por sección (ajusta estas rutas a tus iconos si querés) */
 #destinos.section::after{
-  background: url('Imagenes/Logos/PNG/favicon.png') center/28px 28px no-repeat, #fff;
+  background: url('Imagenes/Logos/PNG/avion.png') center/28px 28px no-repeat, #fff;
 }
 #paquetes.section::after{
-  background: url('Imagenes/Logos/PNG/favicon.png') center/28px 28px no-repeat, #fff;
+  background: url('Imagenes/Logos/PNG/maleta.png') center/28px 28px no-repeat, #fff;
 }
 #nosotros.section::after{
-  background: url('Imagenes/Logos/PNG/favicon.png') center/28px 28px no-repeat, #fff;
+  background: url('Imagenes/Logos/PNG/personas.png') center/28px 28px no-repeat, #fff;
 }
 #contacto.section::after{
-  background: url('Imagenes/Logos/PNG/favicon.png') center/28px 28px no-repeat, #fff;
+  background: url('Imagenes/Logos/PNG/contacto.png') center/28px 28px no-repeat, #fff;
 }
 #terminos.section::after{
-  background: url('Imagenes/Logos/PNG/favicon.png') center/28px 28px no-repeat, #fff;
+  background: url('Imagenes/Logos/PNG/legales.png') center/28px 28px no-repeat, #fff;
 }
 
 /* GRID */
@@ -268,3 +268,4 @@ body{
   .whatsapp::after, .whatsapp::before{ transition:none; }
   .wa-popup{ transition:none; }
 }
+
