@@ -467,3 +467,9 @@ html, body{
   .hero-slider{ transition:none; }
 }
 
+
+
+/* ===== DESACTIVAR POPUP EN MÓVIL (solo queda el logo) ===== */
+@media (max-width:900px){
+  .wa-popup{ display:none !important; }
+}
