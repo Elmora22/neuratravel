@@ -1,0 +1,278 @@
+/* ===== RESET ===== */
+*{margin:0;padding:0;box-sizing:border-box;}
+
+html{ scroll-behavior:smooth; }
+
+:root{
+  /* Ícono por defecto del divisor (si alguna sección no tiene mapeo propio) */
+  --divider-icon: url('../SitioWeb Travel/Imagenes/iconos/plane.svg');
+}
+
+body{
+  font-family:'Montserrat',sans-serif;
+  color:#1a1a1a;
+}
+
+/* ===== TOPBAR ===== */
+.topbar{
+  background:#6fbfb9;
+  color:white;
+  text-align:center;
+  font-size:14px;
+  padding:6px 10px;
+}
+
+/* ===== HEADER ===== */
+.header{
+  background:white;
+  border-bottom:1px solid #eee;
+}
+
+/* FILA SUPERIOR */
+.header-top{
+  max-width:1200px;
+  margin:auto;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
+  padding:10px 20px;
+}
+
+/* LOGO */
+.logo img{ height:100px; }
+
+/* CONTACTO */
+.contact-info{ display:flex; gap:40px; }
+.contact-item{ display:flex; align-items:center; gap:12px; }
+.contact-item .icon{ font-size:22px; }
+.contact-item strong{ display:block; font-size:16px; }
+.contact-item small{ color:#777; font-size:13px; }
+
+/* ===== NAVBAR ===== */
+.navbar{
+  display:flex; justify-content:center; gap:30px; padding:14px 10px;
+  background:linear-gradient(90deg,#A9DED8 0%,#B4B7BD 100%);
+  border-top:3px solid #ffffff40; border-bottom:3px solid #ffffff40;
+  position:relative; z-index:10;
+}
+.navbar a{
+  text-decoration:none; color:#1b1b1b; font-weight:600; font-size:15px;
+  letter-spacing:.3px; padding:8px 12px; transition:.25s;
+}
+.navbar a:hover{ color:white; transform:translateY(-1px); }
+
+/* ===== HERO ===== */
+.hero{
+  position:relative; height:80vh; min-height:420px; overflow:hidden;
+  background:#0e1b2c;
+}
+/* Carrusel del HERO */
+.hero-slider{
+  position:absolute; inset:0; display:flex; width:100%; height:100%;
+  transform:translateX(0); transition:transform .6s ease; will-change:transform; z-index:0;
+}
+.hero-slide{
+  flex:0 0 100%; height:100%; background-size:cover; background-position:center; background-repeat:no-repeat;
+}
+/* Contenido por encima del carrusel */
+.hero-content{
+  position:relative; z-index:1; height:100%;
+  display:flex; flex-direction:column; align-items:center; justify-content:center;
+  text-align:center; color:white; padding:0 20px;
+  background:linear-gradient(to bottom, rgba(0,0,0,.20), rgba(0,0,0,.35));
+}
+.hero-content h1{ font-size:48px; margin-bottom:14px; }
+.hero-content p{ font-size:20px; margin-bottom:30px; }
+
+/* BOTON */
+.btn{
+  background:#A9DED8; padding:14px 28px; border-radius:40px; font-weight:700;
+  text-decoration:none; color:#1a1a1a; transition:.3s;
+}
+.btn:hover{ background:#94cbc5; }
+
+/* ===== SECCIONES ===== */
+.section{
+  padding:80px 0; width:90%; max-width:1100px; margin:auto;
+  scroll-margin-top:90px;
+  position:relative; /* para divisor */
+}
+
+/* Fondo gris más marcado para alternar */
+.section.alt{
+  background:#e9ecef; /* antes #f7f7f7 */
+  width:100%;
+}
+
+.section h2{ text-align:center; margin-bottom:50px; font-size:32px; }
+.center{ text-align:center; max-width:700px; margin:auto; }
+
+/* ===== DIVISOR ENTRE SECCIONES (línea + ícono) ===== */
+/* Línea entre secciones */
+.section + .section::before{
+  content:''; position:absolute; left:5%; right:5%; top:-24px; height:2px;
+  background:linear-gradient(90deg, transparent 0, #d0d7de 12%, #d0d7de 88%, transparent 100%);
+  z-index:2;
+}
+/* Ícono centrado - por defecto usa --divider-icon */
+.section + .section::after{
+  content:''; position:absolute; top:-44px; left:50%; transform:translateX(-50%);
+  width:56px; height:56px; border-radius:50%;
+  background: var(--divider-icon) center/28px 28px no-repeat, #fff;
+  border:1px solid #e8eaef; box-shadow:0 8px 22px rgba(0,0,0,.18); z-index:3;
+}
+
+/* ===== ÍCONOS INDIVIDUALES POR SECCIÓN ===== */
+/* 👇 Cambiá estas rutas por tus archivos (SVG/PNG). El ícono se aplica
+   al divisor ANTERIOR a cada sección. */
+#destinos.section::after{
+  background: url('../SitioWeb Travel/Imagenes/avion.png') center/28px 28px no-repeat, #fff;
+}
+#paquetes.section::after{
+  background: url('../SitioWeb Travel/Imagenes/maleta.png') center/28px 28px no-repeat, #fff;
+}
+#nosotros.section::after{
+  background: url('../SitioWeb Travel/Imagenes/personas.png') center/28px 28px no-repeat, #fff;
+}
+#contacto.section::after{
+  background: url('../SitioWeb Travel/Imagenes/contacto.png') center/28px 28px no-repeat, #fff;
+}
+#terminos.section::after{
+  background: url('../SitioWeb Travel/Imagenes/legales.png') center/28px 28px no-repeat, #fff;
+}
+
+/* Si querés invertir alguno a “blanco” sobre verde, usá filtros en SVG
+   o prepará un PNG/SVG ya con el color deseado. */
+
+/* GRID */
+.grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:30px; }
+
+/* CARD */
+.card{
+  background:white; border-radius:16px; overflow:hidden;
+  box-shadow:0 8px 24px rgba(0,0,0,0.06); transition:.3s;
+}
+.card:hover{ transform:translateY(-6px); }
+.card img{ width:100%; height:200px; object-fit:cover; }
+.card h3{ padding:18px 20px 6px; }
+.card p{ padding:0 20px 20px; opacity:.8; }
+
+/* FORM */
+.form{ max-width:520px; margin:auto; display:flex; flex-direction:column; gap:14px; }
+.form input, .form textarea{ padding:14px; border-radius:10px; border:1px solid #ddd; }
+.form textarea{ min-height:120px; }
+
+/* ===== STRIP DE ENLACES ===== */
+.trust-strip{ background:#fff; border-top:1px solid #eee; border-bottom:1px solid #eee; }
+.trust-wrap{
+  max-width:1200px; margin:auto; padding:22px 20px;
+  display:grid; grid-template-columns:repeat(3,1fr); gap:24px;
+  align-items:center; justify-items:center;
+}
+.trust-item{
+  display:flex; align-items:center; gap:12px; text-decoration:none; color:#1a1a1a;
+  font-weight:600; transition:transform .2s ease, opacity .2s ease;
+}
+.trust-item img{
+  width:auto; height:auto; max-width:120px; max-height:80px; object-fit:contain;
+  filter:grayscale(30%); opacity:.9; transition:filter .2s ease, opacity .2s ease, transform .2s ease;
+}
+.trust-item span{ font-size:15px; letter-spacing:.2px; }
+.trust-item:hover{ transform:translateY(-2px); }
+.trust-item:hover img{ filter:none; opacity:1; transform:scale(1.04); }
+.trust-wrap a:nth-child(1) img{ max-width:150px; max-height:90px; }
+.trust-wrap a:nth-child(2) img{ max-width:140px; max-height:100px; }
+.trust-wrap a:nth-child(3) img{ max-width:180px; max-height:90px; }
+
+/* ===== FOOTER ===== */
+.footer{
+  color:white; text-align:center; padding:45px 20px;
+  background:linear-gradient(90deg,#B4B7BD 0%,#A9DED8 100%);
+  border-top:3px solid #ffffff40; border-bottom:3px solid #ffffff40;
+}
+.footer-logo{ height:100px; margin-bottom:12px; }
+
+/* ===== WHATSAPP ===== */
+.whatsapp{ position:fixed; bottom:25px; right:25px; z-index:1100; }
+.whatsapp img{ width:60px; }
+
+/* Globito rápido */
+.whatsapp::after{
+  content:'¿Necesitas Ayuda?'; position:absolute; right:70px; bottom:6px;
+  background:#fff; color:#1a1a1a; padding:10px 14px; border-radius:24px; font-size:14px; font-weight:600;
+  white-space:nowrap; box-shadow:0 8px 20px rgba(0,0,0,.18); opacity:0; transform:translateX(8px);
+  pointer-events:none; transition:opacity .18s ease, transform .18s ease;
+}
+.whatsapp::before{
+  content:''; position:absolute; right:56px; bottom:18px; width:12px; height:12px; background:#fff;
+  transform:rotate(45deg); box-shadow:0 6px 16px rgba(0,0,0,.12); opacity:0; transition:opacity .18s ease;
+}
+.whatsapp:hover::after, .whatsapp:focus-visible::after{ opacity:1; transform:translateX(0); }
+.whatsapp:hover::before, .whatsapp:focus-visible::before{ opacity:1; }
+
+/* Popup WhatsApp */
+.wa-popup{
+  position:fixed; right:95px; bottom:20px; width:320px; max-width:calc(100vw - 40px);
+  border-radius:18px; background:#f7fdf7; box-shadow:0 18px 50px rgba(0,0,0,.25);
+  overflow:hidden; z-index:1200; opacity:0; transform:translateY(8px) scale(.98);
+  pointer-events:none; transition:opacity .22s ease, transform .22s ease;
+}
+.wa-popup--visible{ opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
+.wa-popup__header{
+  background:#25D366; color:#fff; padding:12px 16px;
+  display:flex; align-items:center; justify-content:space-between;
+}
+.wa-popup__title{ display:flex; align-items:center; gap:10px; font-weight:800; }
+.wa-popup__close{
+  appearance:none; border:0; background:rgba(255,255,255,.18); color:#fff;
+  border-radius:50%; width:28px; height:28px; font-size:16px; line-height:28px; cursor:pointer;
+}
+.wa-popup__body{ padding:16px; background:#f9fffb; }
+.wa-bubble{
+  display:inline-block; background:#fff; border-radius:16px; padding:12px 14px;
+  margin-bottom:14px; color:#1a1a1a; box-shadow:0 6px 18px rgba(0,0,0,.08); position:relative;
+}
+.wa-bubble::before{
+  content:''; position:absolute; left:-6px; top:16px; width:12px; height:12px;
+  background:#fff; border-radius:3px; transform:rotate(45deg); box-shadow:0 6px 16px rgba(0,0,0,.07);
+}
+.wa-popup__cta{
+  display:inline-flex; align-items:center; gap:10px; background:#25D366; color:#fff; text-decoration:none;
+  border:0; border-radius:30px; padding:12px 16px; font-weight:800;
+  box-shadow:0 8px 18px rgba(37,211,102,.35);
+  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
+}
+.wa-popup__cta:hover{ transform:translateY(-1px); box-shadow:0 10px 22px rgba(37,211,102,.45); background:#21bf5a; }
+.wa-popup__cta-icon{
+  width:0; height:0; border-left:14px solid #fff; border-top:8px solid transparent; border-bottom:8px solid transparent;
+  filter:drop-shadow(0 1px 0 rgba(0,0,0,.15));
+}
+
+/* Estado “navbar fija” (el JS agrega .nav-fixed a <html>) */
+.nav-fixed .navbar{
+  position:fixed; top:0; left:0; right:0; z-index:1000; box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+.nav-fixed .hero{ margin-top:var(--nav-h,64px); }
+
+/* ===== RESPONSIVE ===== */
+@media(max-width:900px){
+  .hero{ height:64vh; }
+  .hero-content h1{ font-size:36px; }
+  .hero-content p{ font-size:18px; }
+
+  .header-top{ flex-direction:column; gap:15px; text-align:center; }
+  .contact-info{ flex-direction:column; gap:12px; }
+
+  .trust-wrap{ grid-template-columns:1fr; gap:14px; padding:18px 16px; }
+
+  .section{ scroll-margin-top:110px; }
+
+  .wa-popup{ right:20px; bottom:95px; width:min(320px, calc(100vw - 40px)); }
+}
+
+/* Reducir animaciones si el usuario lo pide */
+@media (prefers-reduced-motion: reduce){
+  .hero-slider{ transition:none; }
+  .whatsapp::after, .whatsapp::before{ transition:none; }
+  .wa-popup{ transition:none; }
+}
