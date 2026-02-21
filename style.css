@@ -198,7 +198,19 @@ body{
   border-top:3px solid #ffffff40; border-bottom:3px solid #ffffff40;
 }
 
-.footer-logo{ height:85px; margin-bottom:12px; }
+/* Footer logo: mantener proporción sin deformar */
+.footer-logo{
+  display:block;
+  margin:0 auto 12px;
+
+  /* Claves anti-estiramiento */
+  width:auto;           /* no forzar ancho */
+  height:auto;          /* no forzar alto */
+  max-width:220px;      /* límite visual desktop (ajustable) */
+  max-height:85px;      /* límite visual desktop (ajustable) */
+
+  object-fit:contain;   /* evita recortes si se fijan máx. */
+}
 
 
 /* WHATSAPP FLOAT */
@@ -213,13 +225,14 @@ body{
 .nav-fixed .hero{ margin-top:var(--nav-h,64px); }
 
 /* ===== RESPONSIVE ===== */
+
 @media (max-width:900px){
-  
-.footer-logo{
-    max-height:64px;   /* ← tamaño cómodo en mobile */
-    max-width:70%;
+  .footer-logo{
+    max-width:180px;  /* tamaño cómodo en mobile */
+    max-height:64px;  /* mantiene proporción */
   }
 }
+
 
   /* Header */
   .header-top{
@@ -261,6 +274,7 @@ body{
   .hero-slider{ transition:none; }
 }
 ``
+
 
 
 
