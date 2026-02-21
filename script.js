@@ -1,36 +1,48 @@
 document.addEventListener('DOMContentLoaded', () => {
-  /* ==========================
-     NAV TOGGLE (hamburguesa)
-     ========================== */
-  const navToggle = document.getElementById('nav-toggle');
-  const navbar = document.getElementById('principal-nav');
+  // ===== NAV TOGGLE (hamburguesa) =====
+const navToggle = document.getElementById('nav-toggle');
+const navbar = document.getElementById('principal-nav');
 
-  function closeNav() {
-    navToggle.setAttribute('aria-expanded', 'false');
-    navbar.classList.remove('open');
-  }
-  function openNav() {
-    navToggle.setAttribute('aria-expanded', 'true');
-    navbar.classList.add('open');
-  }
+function isMobile(){ return window.matchMedia('(max-width: 900px)').matches; }
 
-  if (navToggle && navbar) {
-    navToggle.addEventListener('click', () => {
-      const expanded = navToggle.getAttribute('aria-expanded') === 'true';
-      expanded ? closeNav() : openNav();
-    });
+function closeNav() {
+  if (!navToggle || !navbar) return;
+  navToggle.setAttribute('aria-expanded', 'false');
+  navbar.classList.remove('open');
+}
+function openNav() {
+  if (!navToggle || !navbar) return;
+  navToggle.setAttribute('aria-expanded', 'true');
+  navbar.classList.add('open');
+}
 
-    // Cerrar al hacer click en un link
-    navbar.addEventListener('click', (e) => {
-      if (e.target.matches('a')) closeNav();
-    });
+if (navToggle && navbar) {
+  navToggle.addEventListener('click', () => {
+    if (!isMobile()) return; // <-- evita afectar desktop
+    const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+    expanded ? closeNav() : openNav();
+  });
 
-    // Reset en desktop
-    const mq = window.matchMedia('(min-width: 901px)');
-    const handleMQ = () => { if (mq.matches) closeNav(); };
-    mq.addEventListener ? mq.addEventListener('change', handleMQ) : mq.addListener(handleMQ);
-    handleMQ();
-  }
+  // Cerrar al hacer click en un link (sólo mobile)
+  navbar.addEventListener('click', (e) => {
+    if (!isMobile()) return;
+    if (e.target.matches('a')) closeNav();
+  });
+
+  // Al cambiar el ancho de pantalla: resetear estado correctamente
+  const mq = window.matchMedia('(max-width: 900px)');
+  const handleMQ = () => {
+    if (mq.matches) {
+      // Mobile: empezar colapsado
+      closeNav();
+    } else {
+      // Desktop: asegurar nav abierto visualmente
+      closeNav(); // quita clases/aria, y desktop no usa colapso
+    }
+  };
+  mq.addEventListener ? mq.addEventListener('change', handleMQ) : mq.addListener(handleMQ);
+  handleMQ();
+}
 
   /* ==========================
      CARRUSEL HERO (auto + swipe)
@@ -179,3 +191,4 @@ document.addEventListener('DOMContentLoaded', () => {
     applyState();
   }
 });
+
