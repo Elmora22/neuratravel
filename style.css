@@ -198,15 +198,7 @@ body{
   border-top:3px solid #ffffff40; border-bottom:3px solid #ffffff40;
 }
 
-.footer-logo{
-  display:block;
-  height:auto;          /* ← evita estirar por altura fija */
-  width:auto;           /* ← mantiene proporción natural */
-  max-height:85px;      /* ← límite visual en desktop */
-  max-width:80%;        /* ← evita desbordes en móviles */
-  object-fit:contain;   /* ← asegura que no se deforme */
-  margin:0 auto 12px;   /* ← centrado */
-}
+.footer-logo{ height:85px; margin-bottom:12px; }
 
 
 /* WHATSAPP FLOAT */
@@ -262,4 +254,5 @@ body{
   .hero-slider{ transition:none; }
 }
 ``
+
 
