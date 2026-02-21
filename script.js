@@ -191,8 +191,8 @@ document.addEventListener('DOMContentLoaded', () => {
     applyState();
   }
 
- /* ==========================
-   WHATSAPP: globito + popup tras 2s SOLO EN DESKTOP
+/* ==========================
+   WHATSAPP: tooltip + popup a los 2s (solo DESKTOP)
    ========================== */
 (function(){
   const waLink = document.querySelector('.whatsapp');
@@ -200,10 +200,10 @@ document.addEventListener('DOMContentLoaded', () => {
 
   const isMobile = () => window.matchMedia('(max-width: 900px)').matches;
 
-  // En móvil: NO crear popup ni timers (solo queda el logo)
+  // MÓVIL: no crear popup ni listeners (queda solo el logo)
   if (isMobile()) return;
 
-  // ---- Desktop: crear popup si no existe ----
+  // DESKTOP: crear popup si no existe
   let popup = document.querySelector('.wa-popup');
   if (!popup) {
     popup = document.createElement('div');
@@ -242,7 +242,7 @@ document.addEventListener('DOMContentLoaded', () => {
     document.body.appendChild(popup);
   }
 
-  // ---- Timers de hover SOLO en desktop ----
+  // Timers de hover SOLO en desktop
   const SHOW_DELAY = 2000; // 2s
   const HIDE_DELAY = 180;
 
@@ -260,29 +260,31 @@ document.addEventListener('DOMContentLoaded', () => {
     hideTimer = setTimeout(() => { if (!overBtn && !overPopup) hide(); }, HIDE_DELAY);
   };
 
+  // Mostrar popup tras 2s de hover/focus en el botón (desktop)
   waLink.addEventListener('mouseenter', () => { overBtn = true; scheduleShow(); });
   waLink.addEventListener('mouseleave', () => { overBtn = false; scheduleHide(); });
   waLink.addEventListener('focus',      () => { overBtn = true; scheduleShow(); });
   waLink.addEventListener('blur',       () => { overBtn = false; scheduleHide(); });
 
+  // Mantener visible si el cursor entra al popup
   popup.addEventListener('mouseenter', () => { overPopup = true; clearTimeout(hideTimer); });
   popup.addEventListener('mouseleave', () => { overPopup = false; scheduleHide(); });
 
+  // Cerrar con X / clic fuera / Escape
   popup.querySelector('.wa-popup__close').addEventListener('click', () => {
     overBtn = false; overPopup = false;
     hide(); clearTimeout(showTimer); clearTimeout(hideTimer);
   });
-
   document.addEventListener('click', (e) => {
     if (!popup.classList.contains('wa-popup--visible')) return;
     const dentroPopup = e.target.closest('.wa-popup');
     const enBoton = e.target.closest('.whatsapp');
     if (!dentroPopup && !enBoton) { overBtn = false; overPopup = false; hide(); }
   });
-
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') { overBtn = false; overPopup = false; hide(); }
   });
 })();
+
 
 
