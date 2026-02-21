@@ -4,25 +4,52 @@ document.addEventListener('DOMContentLoaded', () => {
      ========================== */
   const slider = document.querySelector('.hero-slider');
   const slides = slider ? Array.from(slider.querySelectorAll('.hero-slide')) : [];
-  if (slider && slides.length > 1) {
-    let index = 0;
-    const total = slides.length;
-    const INTERVALO_MS = 3500;
 
-    function irA(i) {
-      index = (i + total) % total;
-      slider.style.transform = `translateX(-${index * 100}%)`;
+  if (slider && slides.length > 1) {
+    // Parámetros
+    const DURACION_PAUSA = 3800;   // tiempo visible por slide
+    const DURACION_TRANS = 700;    // debe matchear el CSS (.7s)
+    let index = 0;
+    let timer = null;
+
+    // Asegurar estado inicial
+    function aplicarTransform(i) {
+      slider.style.transform = `translateX(-${i * 100}%)`;
+    }
+    aplicarTransform(index);
+
+    function siguiente() {
+      index = (index + 1) % slides.length;
+      aplicarTransform(index);
     }
 
-    let timer = setInterval(() => irA(index + 1), INTERVALO_MS);
+    function iniciar() {
+      detener();
+      timer = setInterval(siguiente, DURACION_PAUSA);
+    }
+    function detener() {
+      if (timer) { clearInterval(timer); timer = null; }
+    }
 
-    slider.addEventListener('mouseenter', () => clearInterval(timer));
-    slider.addEventListener('mouseleave', () => {
-      clearInterval(timer);
-      timer = setInterval(() => irA(index + 1), INTERVALO_MS);
-    });
+    // Iniciar autoplay
+    iniciar();
 
-    window.addEventListener('resize', () => irA(index));
+    // Recalcular en resize (mantiene posición)
+    window.addEventListener('resize', () => aplicarTransform(index));
+
+    // Pausar si el usuario prefiere menos animación
+    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const aplicarRM = () => {
+      if (media.matches) {
+        detener();
+        slider.style.transition = 'none';
+      } else {
+        slider.style.transition = 'transform .7s ease';
+        iniciar();
+      }
+    };
+    media.addEventListener?.('change', aplicarRM);
+    aplicarRM();
   }
 
   /* ==========================
@@ -108,19 +135,5 @@ document.addEventListener('DOMContentLoaded', () => {
     });
     window.addEventListener('scroll', aplicarEstado, { passive: true });
     aplicarEstado();
-  }
-
-  /* ==========================
-     POPUP WhatsApp simple (opcional)
-     ========================== */
-  const waLink = document.querySelector('.whatsapp');
-  if (waLink) {
-    // Abrir chat al presionar Enter/Espacio (accesible)
-    waLink.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') {
-        e.preventDefault();
-        waLink.click();
-      }
-    });
   }
 });
