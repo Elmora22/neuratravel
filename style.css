@@ -214,6 +214,13 @@ body{
 
 /* ===== RESPONSIVE ===== */
 @media (max-width:900px){
+  
+.footer-logo{
+    max-height:64px;   /* ← tamaño cómodo en mobile */
+    max-width:70%;
+  }
+}
+
   /* Header */
   .header-top{
     grid-template-columns:1fr auto;
@@ -254,5 +261,6 @@ body{
   .hero-slider{ transition:none; }
 }
 ``
+
 
 
