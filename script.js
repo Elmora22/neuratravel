@@ -115,7 +115,7 @@ document.addEventListener('DOMContentLoaded', () => {
 
   /* ============================================
      POPUP DE WHATSAPP (muestra tras 3s de hover/focus)
-     Corregido: no desaparece al pasar del ícono al panel.
+     No desaparece al pasar del ícono al panel.
      ============================================ */
   const waLink = document.querySelector('.whatsapp');
   if (waLink) {
@@ -151,9 +151,9 @@ document.addEventListener('DOMContentLoaded', () => {
     `;
     document.body.appendChild(popup);
 
-    // ---- CONTROL DE MOSTRADO/OCULTADO (CORREGIDO) ----
-    const SHOW_DELAY = 3000; // ⏱️ tiempo de espera (ms)
-    const HIDE_DELAY = 180;  // leve demora al salir para evitar parpadeo
+    // Control robusto (no desaparece al pasar del ícono al panel)
+    const SHOW_DELAY = 3000; // tiempo de espera (ms)
+    const HIDE_DELAY = 180;  // leve demora al salir
 
     let showTimer = null;
     let hideTimer = null;
@@ -176,7 +176,7 @@ document.addEventListener('DOMContentLoaded', () => {
       }, HIDE_DELAY);
     };
 
-    // Estado “sobre el botón” (mouse y teclado)
+    // Estado “sobre el botón” (mouse/teclado)
     waLink.addEventListener('mouseenter', () => { overBtn = true; scheduleShow(); });
     waLink.addEventListener('mouseleave', () => { overBtn = false; scheduleHide(); });
     waLink.addEventListener('focus', () => { overBtn = true; scheduleShow(); });
@@ -186,7 +186,7 @@ document.addEventListener('DOMContentLoaded', () => {
     popup.addEventListener('mouseenter', () => { overPopup = true; clearTimeout(hideTimer); });
     popup.addEventListener('mouseleave', () => { overPopup = false; scheduleHide(); });
 
-    // Cerrar con botón X
+    // Cerrar con X
     popup.querySelector('.wa-popup__close').addEventListener('click', () => {
       overBtn = false; overPopup = false;
       popup.classList.remove('wa-popup--visible');
@@ -207,12 +207,7 @@ document.addEventListener('DOMContentLoaded', () => {
     // Cerrar con Escape
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') {
-        overBtn = false; overPopup = false;
-        popup.classList.remove('wa-popup--visible');
-      }
-    });
-
-    // (Opcional) Soporte táctil: tap prolongado abre el popup, tap fuera lo cierra
+        overpcional) Tap prolongado en móvil abre el popup
     let touchTimer = null;
     waLink.addEventListener('touchstart', () => {
       touchTimer = setTimeout(show, 600);
