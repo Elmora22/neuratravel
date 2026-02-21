@@ -1,81 +1,127 @@
 document.addEventListener('DOMContentLoaded', () => {
   /* ==========================
-     CARRUSEL HERO (auto-slide)
+     NAV TOGGLE (hamburguesa)
+     ========================== */
+  const navToggle = document.getElementById('nav-toggle');
+  const navbar = document.getElementById('principal-nav');
+
+  function closeNav() {
+    navToggle.setAttribute('aria-expanded', 'false');
+    navbar.classList.remove('open');
+  }
+  function openNav() {
+    navToggle.setAttribute('aria-expanded', 'true');
+    navbar.classList.add('open');
+  }
+
+  if (navToggle && navbar) {
+    navToggle.addEventListener('click', () => {
+      const expanded = navToggle.getAttribute('aria-expanded') === 'true';
+      expanded ? closeNav() : openNav();
+    });
+
+    // Cerrar al hacer click en un link
+    navbar.addEventListener('click', (e) => {
+      if (e.target.matches('a')) closeNav();
+    });
+
+    // Reset en desktop
+    const mq = window.matchMedia('(min-width: 901px)');
+    const handleMQ = () => { if (mq.matches) closeNav(); };
+    mq.addEventListener ? mq.addEventListener('change', handleMQ) : mq.addListener(handleMQ);
+    handleMQ();
+  }
+
+  /* ==========================
+     CARRUSEL HERO (auto + swipe)
      ========================== */
   const slider = document.querySelector('.hero-slider');
   const slides = slider ? Array.from(slider.querySelectorAll('.hero-slide')) : [];
 
   if (slider && slides.length > 1) {
-    // Parámetros
-    const DURACION_PAUSA = 3800;   // tiempo visible por slide
-    const DURACION_TRANS = 700;    // debe matchear el CSS (.7s)
     let index = 0;
+    const PAUSA = 3800;      // tiempo visible
+    const TRANS_MS = 700;    // debe matchear CSS
     let timer = null;
 
-    // Asegurar estado inicial
-    function aplicarTransform(i) {
-      slider.style.transform = `translateX(-${i * 100}%)`;
-    }
-    aplicarTransform(index);
-
-    function siguiente() {
-      index = (index + 1) % slides.length;
-      aplicarTransform(index);
-    }
-
-    function iniciar() {
-      detener();
-      timer = setInterval(siguiente, DURACION_PAUSA);
-    }
-    function detener() {
-      if (timer) { clearInterval(timer); timer = null; }
-    }
-
-    // Iniciar autoplay
-    iniciar();
-
-    // Recalcular en resize (mantiene posición)
-    window.addEventListener('resize', () => aplicarTransform(index));
-
-    // Pausar si el usuario prefiere menos animación
-    const media = window.matchMedia('(prefers-reduced-motion: reduce)');
-    const aplicarRM = () => {
-      if (media.matches) {
-        detener();
-        slider.style.transition = 'none';
-      } else {
-        slider.style.transition = 'transform .7s ease';
-        iniciar();
-      }
+    const goTo = (i) => {
+      index = (i + slides.length) % slides.length;
+      slider.style.transform = `translateX(-${index * 100}%)`;
     };
-    media.addEventListener?.('change', aplicarRM);
-    aplicarRM();
+
+    const start = () => { stop(); timer = setInterval(() => goTo(index + 1), PAUSA); };
+    const stop  = () => { if (timer) { clearInterval(timer); timer = null; } };
+
+    // Estado inicial
+    goTo(0);
+    start();
+
+    // Mantener posición en resize
+    window.addEventListener('resize', () => goTo(index));
+
+    // Pausa al interactuar
+    slider.addEventListener('mouseenter', stop);
+    slider.addEventListener('mouseleave', start);
+
+    // Respeto por reduce motion
+    const rm = window.matchMedia('(prefers-reduced-motion: reduce)');
+    const applyRM = () => {
+      if (rm.matches) { stop(); slider.style.transition = 'none'; }
+      else { slider.style.transition = `transform ${TRANS_MS}ms ease`; start(); }
+    };
+    rm.addEventListener?.('change', applyRM);
+    applyRM();
+
+    // SWIPE táctil / mouse (pointer)
+    let startX = null;
+    let isPointerDown = false;
+
+    const onDown = (e) => {
+      isPointerDown = true;
+      startX = e.clientX ?? (e.touches && e.touches[0]?.clientX) ?? 0;
+      stop();
+    };
+    const onUp = (e) => {
+      if (!isPointerDown) return;
+      isPointerDown = false;
+      const endX = e.clientX ?? (e.changedTouches && e.changedTouches[0]?.clientX) ?? startX;
+      const dx = endX - startX;
+      const THRESH = 50; // px
+      if (dx > THRESH) goTo(index - 1);
+      else if (dx < -THRESH) goTo(index + 1);
+      start();
+    };
+
+    slider.addEventListener('pointerdown', onDown);
+    window.addEventListener('pointerup', onUp);
+    slider.addEventListener('touchstart', onDown, { passive: true });
+    slider.addEventListener('touchend', onUp,   { passive: true });
   }
 
   /* ==========================
      SCROLL SUAVE con offset
      ========================== */
   const soportaSmooth = 'scrollBehavior' in document.documentElement.style;
-  const HEADER_OFFSET = 90;
-  const HEADER_OFFSET_MOBILE = 110;
+  const HEADER_OFFSET_DESK = 90;
+  const HEADER_OFFSET_MOB  = 110;
 
-  const obtenerOffset = () =>
+  const getOffset = () =>
     window.matchMedia('(max-width: 900px)').matches
-      ? HEADER_OFFSET_MOBILE
-      : HEADER_OFFSET;
+      ? HEADER_OFFSET_MOB
+      : HEADER_OFFSET_DESK;
 
   function smoothScrollTo(targetY, duration = 600) {
-    const inicioY = window.pageYOffset;
-    const distancia = targetY - inicioY;
-    let inicioTiempo = null;
+    const startY = window.pageYOffset;
+    const dist = targetY - startY;
+    let t0 = null;
     function easeInOutQuad(t){ return t < 0.5 ? 2*t*t : -1 + (4 - 2*t) * t; }
-    function animarScroll(ts){
-      if(!inicioTiempo) inicioTiempo = ts;
-      const t = Math.min((ts - inicioTiempo) / duration, 1);
-      window.scrollTo(0, inicioY + distancia * easeInOutQuad(t));
-      if (t < 1) requestAnimationFrame(animarScroll);
+    function step(ts){
+      if(!t0) t0 = ts;
+      const t = Math.min((ts - t0) / duration, 1);
+      window.scrollTo(0, startY + dist * easeInOutQuad(t));
+      if (t < 1) requestAnimationFrame(step);
     }
-    requestAnimationFrame(animarScroll);
+    requestAnimationFrame(step);
   }
 
   document.addEventListener('click', (e) => {
@@ -85,55 +131,51 @@ document.addEventListener('DOMContentLoaded', () => {
     if (hash === '#') return;
     const destino = document.querySelector(hash);
     if (!destino) return;
+
     e.preventDefault();
     const rect = destino.getBoundingClientRect();
-    const offsetTop = window.pageYOffset + rect.top - obtenerOffset();
-    if (soportaSmooth) {
-      window.scrollTo({ top: offsetTop, behavior: 'smooth' });
-    } else {
-      smoothScrollTo(offsetTop, 650);
-    }
+    const offsetTop = window.pageYOffset + rect.top - getOffset();
+
+    if (soportaSmooth) window.scrollTo({ top: offsetTop, behavior: 'smooth' });
+    else smoothScrollTo(offsetTop, 650);
   });
 
   /* ==========================
      NAVBAR FIJA al superar header
      ========================== */
-  const navbar = document.querySelector('.navbar');
-  const header = document.querySelector('.header');
+  const navbarEl = document.querySelector('.navbar');
+  const headerEl = document.getElementById('site-header');
 
-  if (navbar && header) {
+  if (navbarEl && headerEl) {
     const setNavH = () => {
-      const h = navbar.getBoundingClientRect().height;
+      const h = navbarEl.getBoundingClientRect().height;
       document.documentElement.style.setProperty('--nav-h', `${Math.round(h)}px`);
     };
     setNavH();
 
-    const obtenerUmbral = () => {
-      const rect = header.getBoundingClientRect();
-      const headerTopDoc = window.pageYOffset + rect.top;
-      return headerTopDoc + header.offsetHeight;
+    const getThreshold = () => {
+      const rect = headerEl.getBoundingClientRect();
+      const top = window.pageYOffset + rect.top;
+      return top + headerEl.offsetHeight;
     };
 
-    let umbral = obtenerUmbral();
+    let threshold = getThreshold();
 
-    const aplicarEstado = () => {
-      if (window.scrollY >= umbral) {
-        document.documentElement.classList.add('nav-fixed');
-      } else {
-        document.documentElement.classList.remove('nav-fixed');
-      }
+    const applyState = () => {
+      if (window.scrollY >= threshold) document.documentElement.classList.add('nav-fixed');
+      else document.documentElement.classList.remove('nav-fixed');
     };
 
     window.addEventListener('resize', () => {
       setNavH();
-      umbral = obtenerUmbral();
-      aplicarEstado();
+      threshold = getThreshold();
+      applyState();
     });
     window.addEventListener('load', () => {
-      umbral = obtenerUmbral();
-      aplicarEstado();
+      threshold = getThreshold();
+      applyState();
     });
-    window.addEventListener('scroll', aplicarEstado, { passive: true });
-    aplicarEstado();
+    window.addEventListener('scroll', applyState, { passive: true });
+    applyState();
   }
 });
