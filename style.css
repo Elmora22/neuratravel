@@ -153,7 +153,11 @@ html, body{
   scroll-margin-top:90px;
   position:relative;
 }
-.section.alt{  background: transparent !important; }
+
+.section.alt {  background:#e9ecef;   width:100%;}
+
+#paquetes.section.alt {  background: transparent !important;}
+
 .section h2{ text-align:center; margin-bottom:40px; font-size:clamp(22px, 4.5vw, 32px); }
 .center{ text-align:center; max-width:700px; margin:auto; }
 
@@ -346,3 +350,4 @@ html, body{
 @media (prefers-reduced-motion: reduce){
   .hero-slider{ transition:none; }
 }
+
