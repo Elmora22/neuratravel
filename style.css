@@ -63,23 +63,44 @@ body{
 
 /* ===== HERO ===== */
 .hero{
-  position:relative; height:80vh; min-height:420px; overflow:hidden;
-  background:#0e1b2c;
+  position:relative;
+  height:80vh;
+  min-height:420px;
+  overflow:hidden;
+  background:#0e1b2c; /* fallback */
 }
-/* Carrusel del HERO */
+
 .hero-slider{
-  position:absolute; inset:0; display:flex; width:100%; height:100%;
-  transform:translateX(0); transition:transform .6s ease; will-change:transform; z-index:0;
+  position:absolute;
+  inset:0;
+  display:flex;
+  width:100%;
+  height:100%;
+  transform:translateX(0);
+  transition:transform .6s ease;
+  z-index:0;
 }
+
 .hero-slide{
-  flex:0 0 100%; height:100%; background-size:cover; background-position:center; background-repeat:no-repeat;
+  flex:0 0 100%;
+  height:100%;
+  background-size:cover;
+  background-position:center;
+  background-repeat:no-repeat;
 }
-/* Contenido por encima del carrusel */
+
+/* El overlay del texto NO debe tapar la imagen completamente */
 .hero-content{
-  position:relative; z-index:1; height:100%;
-  display:flex; flex-direction:column; align-items:center; justify-content:center;
-  text-align:center; color:white; padding:0 20px;
-  background:linear-gradient(to bottom, rgba(0,0,0,.20), rgba(0,0,0,.35));
+  position:relative;
+  z-index:1;
+  height:100%;
+  display:flex;
+  align-items:center;
+  justify-content:center;
+  text-align:center;
+  color:#fff;
+  padding:0 20px;
+  background:linear-gradient(to bottom, rgba(0,0,0,.20), rgba(0,0,0,.35)); /* semitransparente */
 }
 .hero-content h1{ font-size:48px; margin-bottom:14px; }
 .hero-content p{ font-size:20px; margin-bottom:30px; }
@@ -268,5 +289,6 @@ body{
   .whatsapp::after, .whatsapp::before{ transition:none; }
   .wa-popup{ transition:none; }
 }
+
 
 
