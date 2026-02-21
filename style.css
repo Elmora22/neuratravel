@@ -291,6 +291,28 @@ body{
 }
 
 
+/* ===== PATCH: Alineación correcta del HERO ===== */
+.hero-content{
+  display: flex !important;
+  flex-direction: column !important;   /* <— evita que h1 y p queden en fila */
+  align-items: center !important;
+  justify-content: center !important;
+  gap: 14px;                           /* espaciado entre h1, p y botón */
+  text-align: center;
+  z-index: 1;                          /* por encima de la imagen de fondo */
+}
+
+.hero-slider{ z-index: 0; }            /* asegura el fondo detrás del texto */
+
+.hero-content h1,
+.hero-content p{ 
+  margin: 0;                           /* margin controlado por gap */
+  max-width: min(90vw, 900px);         /* mejor lectura en líneas largas */
+  text-wrap: balance;                  /* soporte moderno para títulos largos */
+}
+
+/* Si el botón quedó muy cercano, puedes ajustar este espaciado fino: */
+.hero-content .btn{ margin-top: 6px; }
 
 
 
