@@ -24,13 +24,16 @@ body{
 }
 
 /* ===== HEADER ===== */
-.header{ background:white; border-bottom:1px solid #eee; }
+.header{
+  background:white;
+  border-bottom:1px solid #eee; /* separador bajo el header-top */
+}
 
-/* Fila superior */
+/* Fila superior (DESKTOP por defecto) */
 .header-top{
   max-width:1200px;
   margin:auto;
-  display:flex;
+  display:flex;                      /* fila en desktop */
   align-items:center;
   justify-content:space-between;
   padding:10px 20px;
@@ -38,22 +41,39 @@ body{
 }
 
 /* Logo header */
-.logo img{ height:auto; max-height:80px; width:auto; }
+.logo img{
+  height:auto;
+  max-height:80px;
+  width:auto;
+}
 
-/* Contacto */
-.contact-info{ display:flex; gap:28px; align-items:center; }
-.contact-item{ display:flex; align-items:center; gap:10px; }
-.contact-item .icon{ font-size:22px; }
+/* Contacto (DESKTOP) */
+.contact-info{
+  display:flex;
+  align-items:center;
+  gap:40px;                          /* espacio entre teléfono y email */
+}
+.contact-item{
+  display:flex;
+  align-items:center;
+  gap:12px;
+}
+.contact-item .icon{ font-size:22px; line-height:1; }
 .contact-item strong{ display:block; font-size:16px; }
 .contact-item small{ color:#777; font-size:13px; }
+
+/* Botón hamburguesa: oculto en desktop */
+.nav-toggle{ display:none; }
 
 /* ===== NAVBAR (DESKTOP por defecto) ===== */
 .navbar{
   background:linear-gradient(90deg,#A9DED8 0%,#B4B7BD 100%);
-  border-top:3px solid #ffffff40; border-bottom:3px solid #ffffff40;
-  position:relative; z-index:10;
+  border-top:3px solid #ffffff40;
+  border-bottom:3px solid #ffffff40;
+  position:relative;
+  z-index:10;
 
-  /* Desktop: barra siempre visible */
+  /* Desktop: barra siempre visible (no colapsada) */
   overflow:visible;
   max-height:none;
 }
@@ -70,9 +90,6 @@ body{
   letter-spacing:.3px; padding:10px 12px; transition:.25s;
 }
 .nav-list a:hover{ color:white; transform:translateY(-1px); }
-
-/* Botón hamburguesa: oculto en desktop */
-.nav-toggle{ display:none; }
 
 /* ===== HERO ===== */
 .hero{
@@ -217,15 +234,15 @@ body{
 /* ===================================================== */
 @media (max-width:900px){
 
-  /* Header en mobile */
+  /* Header en mobile: logo + hamburguesa arriba; contacto debajo centrado */
   .header-top{
-    grid-template-columns:1fr auto;
     display:grid;
+    grid-template-columns:1fr auto; /* logo | hamburguesa */
     align-items:center;
     gap:10px 12px;
   }
 
-  /* Mostrar hamburguesa */
+  /* Mostrar hamburguesa (solo en mobile) */
   .nav-toggle{
     display:inline-flex;
     width:44px; height:44px;
@@ -240,6 +257,16 @@ body{
   .nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(1){ transform:translateY(5px) rotate(45deg); }
   .nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(2){ opacity:0; }
   .nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(3){ transform:translateY(-5px) rotate(-45deg); }
+
+  /* Contacto apilado y centrado en mobile */
+  .contact-info{
+    grid-column:1 / -1;         /* ocupa todo el ancho debajo */
+    justify-content:center;
+    flex-direction:column;
+    gap:10px;
+    text-align:center;
+    margin-top:6px;
+  }
 
   /* Nav colapsable en mobile */
   .navbar{
@@ -283,3 +310,4 @@ body{
 @media (prefers-reduced-motion: reduce){
   .hero-slider{ transition:none; }
 }
+``
