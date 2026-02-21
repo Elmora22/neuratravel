@@ -245,7 +245,7 @@ html, body{
   width:60px; height:60px; display:block;
 }
 
-/* Globito estilo captura: “¿Necesitas Ayuda?” */
+/* Globito: “¿Necesitas Ayuda?” */
 .whatsapp::after{
   content:'¿Necesitas Ayuda?';
   position:absolute;
@@ -282,7 +282,7 @@ html, body{
 .whatsapp:hover::after, .whatsapp:focus-visible::after{ opacity:1; transform:translateX(0); }
 .whatsapp:hover::before, .whatsapp:focus-visible::before{ opacity:1; }
 
-/* Popup principal estilo WhatsApp */
+/* Popup estilo captura */
 .wa-popup{
   position:fixed; right:95px; bottom:20px;
   width:360px; max-width:calc(100vw - 40px);
