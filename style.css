@@ -3,9 +3,9 @@
 
 html{ scroll-behavior:smooth; }
 
+/* Ícono default del divisor (si no se define por sección) */
 :root{
-  /* Ícono por defecto del divisor (si alguna sección no tiene mapeo propio) */
-  --divider-icon: url('../SitioWeb Travel/Imagenes/iconos/plane.svg');
+  --divider-icon: url('Imagenes/Logos/PNG/favicon.png');
 }
 
 body{
@@ -39,7 +39,7 @@ body{
 }
 
 /* LOGO */
-.logo img{ height:100px; }
+.logo img{ height:44px; }
 
 /* CONTACTO */
 .contact-info{ display:flex; gap:40px; }
@@ -107,7 +107,7 @@ body{
 .section h2{ text-align:center; margin-bottom:50px; font-size:32px; }
 .center{ text-align:center; max-width:700px; margin:auto; }
 
-/* ===== DIVISOR ENTRE SECCIONES (línea + ícono) ===== */
+/* ===== DIVISOR ENTRE SECCIONES ===== */
 /* Línea entre secciones */
 .section + .section::before{
   content:''; position:absolute; left:5%; right:5%; top:-24px; height:2px;
@@ -122,27 +122,22 @@ body{
   border:1px solid #e8eaef; box-shadow:0 8px 22px rgba(0,0,0,.18); z-index:3;
 }
 
-/* ===== ÍCONOS INDIVIDUALES POR SECCIÓN ===== */
-/* 👇 Cambiá estas rutas por tus archivos (SVG/PNG). El ícono se aplica
-   al divisor ANTERIOR a cada sección. */
+/* Íconos por sección (ajusta estas rutas a tus iconos si querés) */
 #destinos.section::after{
-  background: url('../SitioWeb Travel/Imagenes/avion.png') center/28px 28px no-repeat, #fff;
+  background: url('Imagenes/Logos/PNG/favicon.png') center/28px 28px no-repeat, #fff;
 }
 #paquetes.section::after{
-  background: url('../SitioWeb Travel/Imagenes/maleta.png') center/28px 28px no-repeat, #fff;
+  background: url('Imagenes/Logos/PNG/favicon.png') center/28px 28px no-repeat, #fff;
 }
 #nosotros.section::after{
-  background: url('../SitioWeb Travel/Imagenes/personas.png') center/28px 28px no-repeat, #fff;
+  background: url('Imagenes/Logos/PNG/favicon.png') center/28px 28px no-repeat, #fff;
 }
 #contacto.section::after{
-  background: url('../SitioWeb Travel/Imagenes/contacto.png') center/28px 28px no-repeat, #fff;
+  background: url('Imagenes/Logos/PNG/favicon.png') center/28px 28px no-repeat, #fff;
 }
 #terminos.section::after{
-  background: url('../SitioWeb Travel/Imagenes/legales.png') center/28px 28px no-repeat, #fff;
+  background: url('Imagenes/Logos/PNG/favicon.png') center/28px 28px no-repeat, #fff;
 }
-
-/* Si querés invertir alguno a “blanco” sobre verde, usá filtros en SVG
-   o prepará un PNG/SVG ya con el color deseado. */
 
 /* GRID */
 .grid{ display:grid; grid-template-columns:repeat(auto-fit,minmax(260px,1fr)); gap:30px; }
@@ -180,9 +175,6 @@ body{
 .trust-item span{ font-size:15px; letter-spacing:.2px; }
 .trust-item:hover{ transform:translateY(-2px); }
 .trust-item:hover img{ filter:none; opacity:1; transform:scale(1.04); }
-.trust-wrap a:nth-child(1) img{ max-width:150px; max-height:90px; }
-.trust-wrap a:nth-child(2) img{ max-width:140px; max-height:100px; }
-.trust-wrap a:nth-child(3) img{ max-width:180px; max-height:90px; }
 
 /* ===== FOOTER ===== */
 .footer{
@@ -190,7 +182,7 @@ body{
   background:linear-gradient(90deg,#B4B7BD 0%,#A9DED8 100%);
   border-top:3px solid #ffffff40; border-bottom:3px solid #ffffff40;
 }
-.footer-logo{ height:100px; margin-bottom:12px; }
+.footer-logo{ height:85px; margin-bottom:12px; }
 
 /* ===== WHATSAPP ===== */
 .whatsapp{ position:fixed; bottom:25px; right:25px; z-index:1100; }
