@@ -222,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div>Hola ♥</div>
             <div>¿En qué podemos ayudarte?</div>
           </div>
-          <a class="wa-popup__cta" href="${waHref}" target="_blank" rel="noopener noreferrer" aria-label="Abrir chat de WhatsApp">
+          ${waHref}
             <span class="wa-popup__cta-icon" aria-hidden="true"></span>
             <span>Abrir chat</span>
           </a>
