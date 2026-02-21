@@ -234,22 +234,27 @@ html, body{
   object-fit:contain;
 }
 
-/* ====== WHATSAPP: botón + globito y popup ====== */
+/* ====== WHATSAPP: botón flotante + tooltip y popup (desktop) ====== */
 
 /* Botón flotante */
 .whatsapp{
-  position:fixed; bottom:25px; right:25px; z-index:1100;
+  position:fixed;
+  bottom:25px;
+  right:25px;
+  z-index:1100;
   outline:0;
 }
 .whatsapp img{
-  width:60px; height:60px; display:block;
+  width:60px;
+  height:60px;
+  display:block;
 }
 
-/* Globito: “¿Necesitas Ayuda?” — a la IZQUIERDA del ícono */
+/* Tooltip: “¿Necesitas Ayuda?” — a la IZQUIERDA del ícono */
 .whatsapp::after{
   content:'¿Necesitas Ayuda?';
   position:absolute;
-  right:64px;                 /* aparece a la izquierda del ícono */
+  right:64px;             /* ← aparece a la izquierda del icono */
   top:6px;
   background:#fff;
   color:#1a1a1a;
@@ -267,9 +272,10 @@ html, body{
 .whatsapp::before{
   content:'';
   position:absolute;
-  right:56px;                 /* colita del globito apuntando al ícono */
+  right:56px;             /* ← “colita” apuntando al icono */
   top:18px;
-  width:14px; height:14px;
+  width:14px;
+  height:14px;
   background:#fff;
   transform:rotate(45deg);
   border-radius:3px;
@@ -278,102 +284,131 @@ html, body{
   transition:opacity .18s ease;
 }
 
-/* Mostrar globito en hover/focus */
-.whatsapp:hover::after, .whatsapp:focus-visible::after{ opacity:1; transform:translateX(0); }
-.whatsapp:hover::before, .whatsapp:focus-visible::before{ opacity:1; }
+/* Mostrar tooltip al hover/focus */
+.whatsapp:hover::after,
+.whatsapp:focus-visible::after{ opacity:1; transform:translateX(0); }
+.whatsapp:hover::before,
+.whatsapp:focus-visible::before{ opacity:1; }
 
-/* Popup estilo captura */
+/* ===== POPUP estilo WhatsApp (solo se mostrará en desktop por JS) ===== */
 .wa-popup{
-  position:fixed; right:95px; bottom:20px;
-  width:360px; max-width:calc(100vw - 40px);
+  position:fixed;
+  right:95px;
+  bottom:20px;
+  width:360px;
+  max-width:calc(100vw - 40px);
   border-radius:22px 22px 28px 28px;
   background:#f3fffb;
   box-shadow:0 18px 50px rgba(0,0,0,.28);
-  overflow:hidden; z-index:1200;
-  opacity:0; transform:translateY(10px) scale(.98);
-  pointer-events:none; transition:opacity .22s ease, transform .22s ease;
+  overflow:hidden;
+  z-index:1200;
+  opacity:0;
+  transform:translateY(10px) scale(.98);
+  pointer-events:none;
+  transition:opacity .22s ease, transform .22s ease;
 }
-.wa-popup--visible{ opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
+.wa-popup--visible{
+  opacity:1;
+  transform:translateY(0) scale(1);
+  pointer-events:auto;
+}
 
-/* Header verde (gradiente) */
+/* Header verde */
 .wa-popup__header{
   background:linear-gradient(180deg,#22c65b 0%, #25D366 100%);
-  color:#fff; padding:14px 16px;
-  display:flex; align-items:center; justify-content:space-between;
+  color:#fff;
+  padding:14px 16px;
+  display:flex;
+  align-items:center;
+  justify-content:space-between;
 }
-.wa-popup__title{ display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px; }
+.wa-popup__title{
+  display:flex;
+  align-items:center;
+  gap:10px;
+  font-weight:800;
+  letter-spacing:.2px;
+}
 .wa-popup__close{
-  appearance:none; border:0; background:rgba(0,0,0,.18); color:#fff;
-  border-radius:50%; width:30px; height:30px; font-size:18px; line-height:30px;
-  cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.18);
+  appearance:none;
+  border:0;
+  background:rgba(0,0,0,.18);
+  color:#fff;
+  border-radius:50%;
+  width:30px;
+  height:30px;
+  font-size:18px;
+  line-height:30px;
+  cursor:pointer;
+  box-shadow:0 2px 6px rgba(0,0,0,.18);
 }
 
 /* Cuerpo */
-.wa-popup__body{ padding:16px 16px 18px; background:#f3fffb; }
+.wa-popup__body{
+  padding:16px 16px 18px;
+  background:#f3fffb;
+}
 
 /* Globito de mensaje */
 .wa-bubble{
-  display:inline-block; background:#fff; border-radius:16px;
-  padding:12px 14px; margin-bottom:16px; color:#1a1a1a;
-  box-shadow:0 6px 18px rgba(0,0,0,.08); position:relative;
+  display:inline-block;
+  background:#fff;
+  border-radius:16px;
+  padding:12px 14px;
+  margin-bottom:16px;
+  color:#1a1a1a;
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+  position:relative;
 }
 .wa-bubble::before{
-  content:''; position:absolute; left:-6px; top:16px; width:12px; height:12px;
-  background:#fff; border-radius:3px; transform:rotate(45deg);
+  content:'';
+  position:absolute;
+  left:-6px;
+  top:16px;
+  width:12px;
+  height:12px;
+  background:#fff;
+  border-radius:3px;
+  transform:rotate(45deg);
   box-shadow:0 6px 16px rgba(0,0,0,.07);
 }
 
-/* CTA grande estilo botón verde */
+/* CTA “Abrir chat” con icono */
 .wa-popup__cta{
-  display:inline-flex; align-items:center; gap:12px;
-  background:#25D366; color:#fff; text-decoration:none;
-  border:0; border-radius:999px; padding:14px 20px; font-weight:800;
+  display:inline-flex;
+  align-items:center;
+  gap:12px;
+  background:#25D366;
+  color:#fff;
+  text-decoration:none;
+  border:0;
+  border-radius:999px;
+  padding:14px 20px;
+  font-weight:800;
   box-shadow:0 10px 22px rgba(37,211,102,.35);
   transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
 }
-.wa-popup__cta:hover{ transform:translateY(-1px); box-shadow:0 12px 26px rgba(37,211,102,.45); background:#21bf5a; }
-
-/* Flechita blanca a la izquierda del texto (decor) */
+.wa-popup__cta:hover{
+  transform:translateY(-1px);
+  box-shadow:0 12px 26px rgba(37,211,102,.45);
+  background:#21bf5a;
+}
 .wa-popup__cta-icon{
-  width:0; height:0;
-  border-left:14px solid #fff; border-top:8px solid transparent; border-bottom:8px solid transparent;
-  filter:drop-shadow(0 1px 0 rgba(0,0,0,.12));
+  width:22px;
+  height:22px;
+  display:inline-block;
+}
+.wa-popup__cta-icon svg{
+  display:block;
+  width:22px;
+  height:22px;
 }
 
-/* ===== Navbar fija ===== */
-.nav-fixed .navbar{
-  position:fixed; top:0; left:0; right:0; z-index:1000;
-  box-shadow:0 6px 18px rgba(0,0,0,.08);
-}
-.nav-fixed .hero{ margin-top:var(--nav-h,64px); }
-
-/* ===================================================== */
-/* ==============   MOBILE ≤ 900px ONLY   ============== */
-/* ===================================================== */
+/* ===== MOBILE: NO popup (solo el logo) ===== */
 @media (max-width:900px){
-
-  /* Evita desbordes laterales del header en móvil */
-  .header{
-    overflow:hidden;
-  }
-
-  /* Header en mobile: logo + hamburguesa arriba; contacto debajo centrado */
-  .header-top{
-    display:grid;
-    grid-template-columns:1fr auto; /* logo | hamburguesa */
-    align-items:center;
-    gap:10px 12px;
-    width:100%;
-    max-width:100%;
-    padding-left:16px;
-    padding-right:16px;
-  }
-
-  /* Logo más contenido en móviles angostos */
-  .logo img{
-    max-width:60vw;
-    height:auto;
-  }
+  .whatsapp{ bottom:18px; right:16px; }
+  .wa-popup{ display:none !important; }
+}
 
   /* Mostrar hamburguesa (solo en mobile) */
   .nav-toggle{
@@ -471,3 +506,4 @@ html, body{
 @media (max-width:900px){
   .wa-popup{ display:none !important; }
 }
+
