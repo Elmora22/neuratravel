@@ -104,14 +104,9 @@ body{
   color:#fff;
 
   /* overlay suave detrás del texto para legibilidad */
- /* background:linear-gradient(
-    to bottom,
-    rgba(0,0,0,.30),
-    rgba(0,0,0,.30)
-  );*/
   padding:28px 28px;
   border-radius:18px;
-  backdrop-filter:saturate(120%) blur(1px);
+
 }
 
 /* Título / párrafo / botón */
@@ -248,4 +243,5 @@ body{
   .hero-slider{ transition:none; }
   .whatsapp::after, .whatsapp::before{ transition:none; }
 }
+
 
