@@ -234,8 +234,9 @@ html, body{
   object-fit:contain;
 }
 
-/* ==========================
-   /* ===== WHATSAPP: botón flotante + tooltip ===== */
+/* ====== WHATSAPP: botón + globito y popup ====== */
+
+/* Botón flotante */
 .whatsapp{
   position:fixed; bottom:25px; right:25px; z-index:1100;
   outline:0;
@@ -244,25 +245,44 @@ html, body{
   width:60px; height:60px; display:block;
 }
 
-/* Tooltip rápido al hover/focus */
+/* Globito estilo captura: “¿Necesitas Ayuda?” */
 .whatsapp::after{
   content:'¿Necesitas Ayuda?';
-  position:absolute; right:70px; bottom:6px;
-  background:#fff; color:#1a1a1a; padding:10px 14px; border-radius:24px;
-  font-size:14px; font-weight:700; white-space:nowrap;
-  box-shadow:0 8px 20px rgba(0,0,0,.18);
-  opacity:0; transform:translateX(8px);
-  pointer-events:none; transition:opacity .18s ease, transform .18s ease;
+  position:absolute;
+  left:64px;                 /* aparece a la derecha del ícono */
+  top:6px;
+  background:#fff;
+  color:#1a1a1a;
+  padding:10px 14px;
+  border-radius:18px;
+  font-size:15px;
+  font-weight:600;
+  white-space:nowrap;
+  box-shadow:0 10px 24px rgba(0,0,0,.18);
+  opacity:0;
+  transform:translateX(8px);
+  pointer-events:none;
+  transition:opacity .18s ease, transform .18s ease;
 }
 .whatsapp::before{
-  content:''; position:absolute; right:56px; bottom:18px;
-  width:12px; height:12px; background:#fff; transform:rotate(45deg);
-  box-shadow:0 6px 16px rgba(0,0,0,.12); opacity:0; transition:opacity .18s ease;
+  content:'';
+  position:absolute;
+  left:56px;                 /* colita apuntando al ícono */
+  top:18px;
+  width:14px; height:14px;
+  background:#fff;
+  transform:rotate(45deg);
+  border-radius:3px;
+  box-shadow:0 8px 20px rgba(0,0,0,.10);
+  opacity:0;
+  transition:opacity .18s ease;
 }
+
+/* Mostrar globito en hover/focus */
 .whatsapp:hover::after, .whatsapp:focus-visible::after{ opacity:1; transform:translateX(0); }
 .whatsapp:hover::before, .whatsapp:focus-visible::before{ opacity:1; }
 
-/* ===== WHATSAPP: popup estilo captura ===== */
+/* Popup principal estilo WhatsApp */
 .wa-popup{
   position:fixed; right:95px; bottom:20px;
   width:360px; max-width:calc(100vw - 40px);
@@ -320,13 +340,7 @@ html, body{
   filter:drop-shadow(0 1px 0 rgba(0,0,0,.12));
 }
 
-/* Responsive */
-@media (max-width:900px){
-  .whatsapp{ bottom:18px; right:16px; }
-  .wa-popup{ right:20px; bottom:88px; width:min(360px, calc(100vw - 40px)); }
-}
-
-/* Navbar fija */
+/* ===== Navbar fija ===== */
 .nav-fixed .navbar{
   position:fixed; top:0; left:0; right:0; z-index:1000;
   box-shadow:0 6px 18px rgba(0,0,0,.08);
@@ -442,13 +456,13 @@ html, body{
     max-height:64px;
   }
 
-  /* WhatsApp: evita tapar CTA */
+  /* WhatsApp posiciones */
   .whatsapp{ bottom:18px; right:16px; }
-}
+  .wa-popup{ right:20px; bottom:88px; width:min(360px, calc(100vw - 40px)); }
 
+}
+  
 /* Reduce motion */
 @media (prefers-reduced-motion: reduce){
   .hero-slider{ transition:none; }
 }
-
-
