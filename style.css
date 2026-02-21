@@ -14,6 +14,12 @@ body{
   -webkit-tap-highlight-color: transparent;
 }
 
+/* Seguridad anti-scroll horizontal global (opcional pero recomendado) */
+html, body{
+  max-width:100%;
+  overflow-x:hidden;
+}
+
 /* ===== TOPBAR ===== */
 .topbar{
   background:#6fbfb9;
@@ -38,6 +44,7 @@ body{
   justify-content:space-between;
   padding:10px 20px;
   gap:16px;
+  box-sizing:border-box;
 }
 
 /* Logo header */
@@ -58,7 +65,7 @@ body{
   align-items:center;
   gap:12px;
 }
-.contact-item .icon{ font-size:22px; line-height:1; }
+.contact-item .icon{ font-size:22px; line-height:1; min-width:22px; }
 .contact-item strong{ display:block; font-size:16px; }
 .contact-item small{ color:#777; font-size:13px; }
 
@@ -146,7 +153,7 @@ body{
   scroll-margin-top:90px;
   position:relative;
 }
-.section.alt{ background:#e9ecef; width:100%; }
+.section.alt{  background: transparent !important; }
 .section h2{ text-align:center; margin-bottom:40px; font-size:clamp(22px, 4.5vw, 32px); }
 .center{ text-align:center; max-width:700px; margin:auto; }
 
@@ -234,12 +241,21 @@ body{
 /* ===================================================== */
 @media (max-width:900px){
 
+  /* Evita desbordes laterales del header en móvil */
+  .header{
+    overflow:hidden;
+  }
+
   /* Header en mobile: logo + hamburguesa arriba; contacto debajo centrado */
   .header-top{
     display:grid;
     grid-template-columns:1fr auto; /* logo | hamburguesa */
     align-items:center;
     gap:10px 12px;
+    width:100%;
+    max-width:100%;
+    padding-left:16px;
+    padding-right:16px;
   }
 
   /* Mostrar hamburguesa (solo en mobile) */
@@ -258,14 +274,34 @@ body{
   .nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(2){ opacity:0; }
   .nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(3){ transform:translateY(-5px) rotate(-45deg); }
 
-  /* Contacto apilado y centrado en mobile */
+  /* Contacto apilado y 100% ancho en mobile (sin salirse) */
   .contact-info{
-    grid-column:1 / -1;         /* ocupa todo el ancho debajo */
-    justify-content:center;
+    grid-column:1 / -1;           /* ocupa todo el ancho debajo */
+    width:100%;
+    max-width:100%;
+    padding:6px 0;
+    margin-top:6px;
+
+    display:flex;
     flex-direction:column;
+    align-items:center;
+    justify-content:center;
     gap:10px;
     text-align:center;
-    margin-top:6px;
+    box-sizing:border-box;
+  }
+  .contact-item{
+    width:100%;
+    max-width:520px;              /* tope agradable en mobile */
+    margin:0 auto;
+    justify-content:center;
+    gap:10px;
+  }
+  .contact-item > div{ max-width:90vw; } /* evita que tel/mail empujen el ancho */
+  .contact-item strong,
+  .contact-item small{
+    white-space:normal;
+    word-break:break-word;
   }
 
   /* Nav colapsable en mobile */
@@ -310,4 +346,3 @@ body{
 @media (prefers-reduced-motion: reduce){
   .hero-slider{ transition:none; }
 }
-``
