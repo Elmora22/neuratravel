@@ -192,12 +192,31 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================
-     WHATSAPP: globito + popup tras 2s (estilo captura)
-     ========================== */
-  (function(){
-    const waLink = document.querySelector('.whatsapp');
-    if (!waLink) return;
+   WHATSAPP: globito + popup tras 2s (solo DESKTOP)
+   ========================== */
+(function(){
+  const waLink = document.querySelector('.whatsapp');
+  if (!waLink) return;
 
+  const isMobile = () => window.matchMedia('(max-width: 900px)').matches;
+
+  // En móvil: NO crear popup ni listeners de retardo
+  if (isMobile()) {
+    // Por si alguien rota la pantalla: si pasa a desktop, podría querer el popup.
+    // Si quisieras que se reactive al pasar a desktop, descomentá este bloque:
+    /*
+    const mq = window.matchMedia('(max-width: 900px)');
+    mq.addEventListener?.('change', (e) => {
+      if (!e.matches) initDesktopPopup(); // al pasar a desktop, inicializar
+    });
+    */
+    return; // <-- móvil: solo queda el logo
+  }
+
+  // Desktop: inicializar popup y comportamiento
+  initDesktopPopup();
+
+  function initDesktopPopup(){
     // Evitar duplicados
     let popup = document.querySelector('.wa-popup');
     if (!popup) {
@@ -231,8 +250,8 @@ document.addEventListener('DOMContentLoaded', () => {
       document.body.appendChild(popup);
     }
 
-    // Timers y estados
-    const SHOW_DELAY = 2000; // ⏱️ 2s de hover/focus
+    // Timers y estados (solo desktop)
+    const SHOW_DELAY = 2000; // 2s hover/focus
     const HIDE_DELAY = 180;
 
     let showTimer = null;
@@ -249,7 +268,7 @@ document.addEventListener('DOMContentLoaded', () => {
       hideTimer = setTimeout(() => { if (!overBtn && !overPopup) hide(); }, HIDE_DELAY);
     };
 
-    // Mostrar tras 2s de hover/focus sobre el botón
+    // Mostrar tras 2s de hover/focus sobre el botón (desktop)
     waLink.addEventListener('mouseenter', () => { overBtn = true; scheduleShow(); });
     waLink.addEventListener('mouseleave', () => { overBtn = false; scheduleHide(); });
     waLink.addEventListener('focus', () => { overBtn = true; scheduleShow(); });
@@ -275,15 +294,6 @@ document.addEventListener('DOMContentLoaded', () => {
 
     // Cerrar con Escape
     document.addEventListener('keydown', (e) => { if (e.key === 'Escape') { overBtn = false; overPopup = false; hide(); } });
+  }
+})();
 
-    // Móvil: tap prolongado (~600ms) muestra popup sin abrir link
-    let touchTimer = null;
-    waLink.addEventListener('touchstart', () => { touchTimer = setTimeout(show, 600); }, { passive:true });
-    waLink.addEventListener('touchend', () => { clearTimeout(touchTimer); }, { passive:true });
-
-    // Accesible: abrir link con Enter/Espacio
-    waLink.addEventListener('keydown', (e) => {
-      if (e.key === 'Enter' || e.key === ' ') { e.preventDefault(); waLink.click(); }
-    });
-  })();
-});
