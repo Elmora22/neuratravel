@@ -250,8 +250,45 @@ html, body{ max-width:100%; overflow-x:hidden; }
   .trust-wrap{ display:flex !important; flex-wrap:nowrap !important; gap:48px !important; justify-content:center !important; align-items:center !important; }
 }
 
-/* ===== MOBILE (≤900px) — nav colapsable ===== */
+/* ===== MOBILE (≤900px): cambiar hamburguesa por texto ===== */
 @media (max-width:900px){
+
+  /* Botón del menú en móvil: ahora muestra la palabra "Menú" */
+  .nav-toggle{
+    display:inline-flex !important;
+    justify-self:end;
+    align-items:center; justify-content:center;
+    height:44px; min-width:72px;
+    padding:0 14px;
+    border:1px solid #e5e7eb;
+    border-radius:8px;
+    background:#fff;
+    cursor:pointer;
+    /* tipografía del texto */
+    font-family:'Montserrat', sans-serif;
+    font-size:15px; font-weight:800; color:#111; letter-spacing:.2px;
+  }
+
+  /* Oculta las 3 barritas */
+  .nav-toggle__bar{ display:none !important; }
+
+  /* Inserta el texto MENÚ */
+  .nav-toggle::after{
+    content:'Menú';
+    line-height:1;
+  }
+
+  /* Cuando está abierto, cambia a "Cerrar" */
+  .nav-toggle[aria-expanded="true"]::after{
+    content:'Cerrar ×';
+  }
+
+  /* Accesibilidad: foco visible */
+  .nav-toggle:focus-visible{
+    outline:2px solid #25D366;
+    outline-offset:2px;
+  }
+}
 
   .header{ overflow:hidden; }
 
@@ -321,3 +358,4 @@ html, body{ max-width:100%; overflow-x:hidden; }
 @media (prefers-reduced-motion: reduce){
   .hero-slider{ transition:none; }
 }
+
