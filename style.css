@@ -6,7 +6,8 @@ html{
 }
 :root{
   --divider-icon: url('Imagenes/avion.png');
-  --nav-h: 64px;            /* altura estimada; el JS la ajusta exacta (se mantiene) */
+  --nav-h: 64px;       /* altura estimada; tu JS la ajusta exacta */
+  --topbar-h: 32px;    /* ALTURA DE LA TOPBAR para ubicar el NAV debajo (ajústala si cambias tipografía/padding) */
 }
 
 body{
@@ -32,8 +33,6 @@ html, body{ max-width:100%; overflow-x:hidden; }
 .header{
   background:#fff;
   border-bottom:1px solid #eee;
-  display:flex;              /* ★ Nuevo: hacemos columna para poder reordenar */
-  flex-direction:column;     /* ★ Nuevo */
 }
 
 /* HEADER-TOP (desktop por defecto) */
@@ -46,7 +45,6 @@ html, body{ max-width:100%; overflow-x:hidden; }
   padding:10px 20px;
   gap:16px;
   box-sizing:border-box;
-  order:2;                   /* ★ Nuevo: va debajo de la navbar dentro del header */
 }
 
 /* Logo */
@@ -65,8 +63,7 @@ html, body{ max-width:100%; overflow-x:hidden; }
   background:linear-gradient(90deg,#A9DED8 0%,#B4B7BD 100%);
   border-top:3px solid #ffffff40;
   border-bottom:3px solid #ffffff40;
-  z-index:1000;
-  order:1;                   /* ★ Nuevo: va arriba del contacto dentro del header */
+  z-index:1000;                 /* por encima del contenido */
 }
 
 /* Menú horizontal (desktop por defecto) */
@@ -232,17 +229,22 @@ html, body{ max-width:100%; overflow-x:hidden; }
 .wa-popup__cta-icon{ width:22px; height:22px; display:inline-block; }
 .wa-popup__cta-icon svg{ display:block; width:22px; height:22px; }
 
-/* ===== DESKTOP (≥901px) — navbar pegado (sticky) y entre topbar y contacto ===== */
+/* ===== Navbar fija SIEMPRE visible en DESKTOP,
+         ubicada ENTRE la topbar y el bloque de contacto ===== */
 @media (min-width:901px){
-  .navbar{
-    position:sticky;   /* ★ Nuevo: siempre visible al scrollear */
-    top:0;             /* ★ Nuevo: se pega al tope cuando la topbar sale de vista */
-  }
+  /* nav fijo bajo la topbar */
+  .navbar{ position:fixed; top:var(--topbar-h); left:0; right:0; }
+
+  /* el body compensa SOLO la altura del navbar (tu JS setea --nav-h) */
+  body{ padding-top: var(--nav-h); }
+
+  /* reforzar layout de desktop */
   .nav-toggle{ display:none !important; }
   .nav-list{
     flex-direction:row !important; justify-content:center !important; align-items:center !important;
     gap:30px !important; padding:14px 10px !important;
   }
+
   /* TRUST STRIP: una fila */
   .trust-wrap{ display:flex !important; flex-wrap:nowrap !important; gap:48px !important; justify-content:center !important; align-items:center !important; }
 }
@@ -281,7 +283,7 @@ html, body{ max-width:100%; overflow-x:hidden; }
   .contact-item > div{ max-width:90vw; }
   .contact-item strong, .contact-item small{ white-space:normal; word-break:break-word; }
 
-  /* Nav colapsable en mobile (NO sticky) */
+  /* Nav colapsable en mobile (NO fixed) */
   .navbar{
     position:relative;
     overflow:hidden !important;
