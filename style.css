@@ -31,7 +31,7 @@ html, body{
 
 /* ===== HEADER ===== */
 .header{
-  background:white;
+  background:#fff;
   border-bottom:1px solid #eee; /* separador bajo el header-top */
 }
 
@@ -69,7 +69,7 @@ html, body{
 .contact-item strong{ display:block; font-size:16px; }
 .contact-item small{ color:#777; font-size:13px; }
 
-/* Botón hamburguesa: oculto en desktop */
+/* Botón hamburguesa: oculto en desktop (reforzado en media query de desktop) */
 .nav-toggle{ display:none; }
 
 /* ===== NAVBAR (DESKTOP por defecto) ===== */
@@ -254,7 +254,7 @@ html, body{
 .whatsapp::after{
   content:'¿Necesitas Ayuda?';
   position:absolute;
-  right:64px;             /* ← aparece a la izquierda del icono */
+  right:64px;             /* aparece a la izquierda del icono */
   top:6px;
   background:#fff;
   color:#1a1a1a;
@@ -272,7 +272,7 @@ html, body{
 .whatsapp::before{
   content:'';
   position:absolute;
-  right:56px;             /* ← “colita” apuntando al icono */
+  right:56px;             /* “colita” apuntando al icono */
   top:18px;
   width:14px;
   height:14px;
@@ -404,15 +404,63 @@ html, body{
   height:22px;
 }
 
-/* ===== MOBILE: NO popup (solo el logo) ===== */
-@media (max-width:900px){
-  .whatsapp{ bottom:18px; right:16px; }
-  .wa-popup{ display:none !important; }
+/* ===== Navbar fija ===== */
+.nav-fixed .navbar{
+  position:fixed; top:0; left:0; right:0; z-index:1000;
+  box-shadow:0 6px 18px rgba(0,0,0,.08);
+}
+.nav-fixed .hero{ margin-top:var(--nav-h,64px); }
+
+/* ===== DESKTOP (≥901px) — forzar nav clásico ===== */
+@media (min-width:901px){
+  .header-top{
+    display:flex !important;
+    align-items:center !important;
+    justify-content:space-between !important;
+    gap:16px !important;
+    padding-left:20px !important;
+    padding-right:20px !important;
+  }
+  .nav-toggle{ display:none !important; }
+  .navbar{ overflow:visible !important; max-height:none !important; }
+  .nav-list{
+    flex-direction:row !important;
+    justify-content:center !important;
+    align-items:center !important;
+    gap:30px !important;
+    padding:14px 10px !important;
+  }
+  .nav-list a{ display:inline-block !important; text-align:left !important; padding:10px 12px !important; }
 }
 
-  /* Mostrar hamburguesa (solo en mobile) */
+/* ===== MOBILE (≤900px) — nav colapsable con hamburguesa ===== */
+@media (max-width:900px){
+
+  /* Evita desbordes laterales del header */
+  .header{ overflow:hidden; }
+
+  /* Header: logo | hamburguesa arriba; contacto debajo centrado */
+  .header-top{
+    display:grid !important;
+    grid-template-columns:1fr auto !important; /* logo | toggle */
+    align-items:center !important;
+    gap:10px 12px !important;
+    width:100% !important;
+    max-width:100% !important;
+    padding-left:16px !important;
+    padding-right:16px !important;
+    box-sizing:border-box !important;
+  }
+
+  /* Logo un poco más contenido en móviles angostos */
+  .logo img{
+    max-width:60vw;
+    height:auto;
+  }
+
+  /* Hamburguesa visible en mobile */
   .nav-toggle{
-    display:inline-flex;
+    display:inline-flex !important;
     justify-self:end;
     width:44px; height:44px;
     border:1px solid #e5e7eb;
@@ -427,9 +475,9 @@ html, body{
   .nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(2){ opacity:0; }
   .nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(3){ transform:translateY(-5px) rotate(-45deg); }
 
-  /* Contacto apilado y 100% ancho en mobile (sin salirse) */
+  /* Contacto apilado y centrado */
   .contact-info{
-    grid-column:1 / -1;           /* ocupa todo el ancho debajo */
+    grid-column:1 / -1;
     width:100%;
     max-width:100%;
     padding:6px 0;
@@ -445,32 +493,37 @@ html, body{
   }
   .contact-item{
     width:100%;
-    max-width:520px;              /* tope agradable en mobile */
+    max-width:520px;
     margin:0 auto;
     justify-content:center;
     gap:10px;
   }
-  .contact-item > div{ max-width:90vw; } /* evita que tel/mail empujen el ancho */
+  .contact-item > div{ max-width:90vw; }
   .contact-item strong,
   .contact-item small{
     white-space:normal;
     word-break:break-word;
   }
 
-  /* Nav colapsable en mobile */
+  /* Nav colapsable */
   .navbar{
-    overflow:hidden;
-    max-height:0;
+    overflow:hidden !important;
+    max-height:0 !important;
     transition:max-height .25s ease;
   }
-  .navbar.open{ max-height:420px; } /* expandido al abrir */
+  .navbar.open{ max-height:420px !important; } /* expandido al abrir */
 
   .nav-list{
-    flex-direction:column;
-    gap:6px;
-    padding:12px 16px;
+    flex-direction:column !important;
+    gap:6px !important;
+    padding:12px 16px !important;
   }
-  .nav-list a{ display:block; width:100%; padding:12px 8px; text-align:center; }
+  .nav-list a{
+    display:block !important;
+    width:100% !important;
+    padding:12px 8px !important;
+    text-align:center !important;
+  }
 
   /* Hero */
   .hero{ height:68vh; min-height:420px; }
@@ -482,28 +535,17 @@ html, body{
   .section{ width:94%; padding:64px 0; scroll-margin-top:110px; }
   .grid{ gap:18px; }
 
-  /* Trust strip */
   .trust-wrap{ grid-template-columns:1fr; gap:14px; padding:18px 16px; }
 
-  /* Footer logo un poco más chico en mobile */
-  .footer-logo{
-    max-width:180px;
-    max-height:64px;
-  }
+  .footer-logo{ max-width:180px; max-height:64px; }
 
   /* WhatsApp posiciones */
   .whatsapp{ bottom:18px; right:16px; }
-  .wa-popup{ right:20px; bottom:88px; width:min(360px, calc(100vw - 40px)); }
 
+  /* No mostrar el popup de WhatsApp en móvil (sólo el logo) */
+  .wa-popup{ display:none !important; }
 }
 
 /* Reduce motion */
 @media (prefers-reduced-motion: reduce){
   .hero-slider{ transition:none; }
-}
-
-/* ===== DESACTIVAR POPUP EN MÓVIL (solo queda el logo) ===== */
-@media (max-width:900px){
-  .wa-popup{ display:none !important; }
-}
-
