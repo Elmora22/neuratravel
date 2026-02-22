@@ -250,112 +250,142 @@ html, body{ max-width:100%; overflow-x:hidden; }
   .trust-wrap{ display:flex !important; flex-wrap:nowrap !important; gap:48px !important; justify-content:center !important; align-items:center !important; }
 }
 
-/* ===== MOBILE (≤900px): cambiar hamburguesa por texto ===== */
+/* ===== MOBILE (≤900px): menú colapsable con texto "Menú" ===== */
 @media (max-width:900px){
 
-  /* Botón del menú en móvil: ahora muestra la palabra "Menú" */
-  .nav-toggle{
-    display:inline-flex !important;
-    justify-self:end;
-    align-items:center; justify-content:center;
-    height:44px; min-width:72px;
-    padding:0 14px;
-    border:1px solid #e5e7eb;
-    border-radius:8px;
-    background:#fff;
-    cursor:pointer;
-    /* tipografía del texto */
-    font-family:'Montserrat', sans-serif;
-    font-size:15px; font-weight:800; color:#111; letter-spacing:.2px;
+  .header{ 
+    overflow:hidden; 
   }
-
-  /* Oculta las 3 barritas */
-  .nav-toggle__bar{ display:none !important; }
-
-  /* Inserta el texto MENÚ */
-  .nav-toggle::after{
-    content:'Menú';
-    line-height:1;
-  }
-
-  /* Cuando está abierto, cambia a "Cerrar" */
-  .nav-toggle[aria-expanded="true"]::after{
-    content:'Cerrar ×';
-  }
-
-  /* Accesibilidad: foco visible */
-  .nav-toggle:focus-visible{
-    outline:2px solid #25D366;
-    outline-offset:2px;
-  }
-}
-
-  .header{ overflow:hidden; }
 
   .header-top{
     display:grid !important;
     grid-template-columns:1fr auto !important; /* logo | toggle */
     align-items:center !important;
     gap:10px 12px !important;
-    width:100% !important; max-width:100% !important;
-    padding-left:16px !important; padding-right:16px !important;
+    width:100% !important; 
+    max-width:100% !important;
+    padding-left:16px !important; 
+    padding-right:16px !important;
     box-sizing:border-box !important;
   }
 
-  .logo img{ max-width:60vw; height:auto; }
+  .logo img{ 
+    max-width:60vw; 
+    height:auto; 
+  }
 
+  /* ===== BOTÓN "MENÚ" ===== */
   .nav-toggle{
-    display:inline-flex !important; justify-self:end; width:44px; height:44px;
-    border:1px solid #e5e7eb; border-radius:8px; background:#fff; align-items:center; justify-content:center;
-  }
-  .nav-toggle__bar{ display:block; width:22px; height:2px; background:#111; margin:3px auto; transition:.2s ease; }
-  .nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(1){ transform:translateY(5px) rotate(45deg); }
-  .nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(2){ opacity:0; }
-  .nav-toggle[aria-expanded="true"] .nav-toggle__bar:nth-child(3){ transform:translateY(-5px) rotate(-45deg); }
+    display:inline-flex !important;
+    justify-self:end;
+    align-items:center; 
+    justify-content:center;
+    height:44px; 
+    min-width:72px;
+    padding:0 14px;
+    border:1px solid #e5e7eb;
+    border-radius:8px;
+    background:#fff;
+    cursor:pointer;
 
-  .contact-info{
-    grid-column:1 / -1; width:100%; max-width:100%; padding:6px 0; margin-top:6px;
-    display:flex; flex-direction:column; align-items:center; justify-content:center; gap:10px; text-align:center; box-sizing:border-box;
+    font-family:'Montserrat', sans-serif;
+    font-size:15px; 
+    font-weight:800; 
+    color:#111; 
+    letter-spacing:.2px;
   }
-  .contact-item{ width:100%; max-width:520px; margin:0 auto; justify-content:center; gap:10px; }
-  .contact-item > div{ max-width:90vw; }
-  .contact-item strong, .contact-item small{ white-space:normal; word-break:break-word; }
 
-  /* Nav colapsable en mobile (NO fixed) */
+  /* Ocultar las barritas antiguas */
+  .nav-toggle__bar{ display:none !important; }
+
+  /* Texto por defecto */
+  .nav-toggle::after{
+    content:'Menú';
+    line-height:1;
+  }
+
+  /* Texto cuando se abre */
+  .nav-toggle[aria-expanded="true"]::after{
+    content:'Cerrar ×';
+  }
+
+  .nav-toggle:focus-visible{
+    outline:2px solid #25D366;
+    outline-offset:2px;
+  }
+
+  /* ===== NAV PARA MOBILE ===== */
   .navbar{
     position:relative;
     overflow:hidden !important;
     max-height:0 !important;
     transition:max-height .25s ease;
   }
-  .navbar.open{ max-height:420px !important; }
-  .nav-list{ flex-direction:column !important; gap:6px !important; padding:12px 16px !important; }
-  .nav-list a{ display:block !important; width:100% !important; padding:12px 8px !important; text-align:center !important; }
 
-  /* Hero */
+  .navbar.open{ 
+    max-height:420px !important; 
+  }
+
+  .nav-list{
+    flex-direction:column !important;
+    gap:6px !important;
+    padding:12px 16px !important;
+  }
+
+  .nav-list a{
+    display:block !important;
+    width:100% !important;
+    padding:12px 8px !important;
+    text-align:center !important;
+  }
+
+  /* Contacto debajo */
+  .contact-info{
+    grid-column:1 / -1;
+    width:100%;
+    max-width:100%;
+    padding:6px 0;
+    margin-top:6px;
+    display:flex;
+    flex-direction:column;
+    align-items:center;
+    justify-content:center;
+    gap:10px;
+    text-align:center;
+    box-sizing:border-box;
+  }
+
+  .contact-item{ width:100%; max-width:520px; margin:0 auto; justify-content:center; gap:10px; }
+  .contact-item > div{ max-width:90vw; }
+  .contact-item strong,
+  .contact-item small{ white-space:normal; word-break:break-word; }
+
+  /* HERO */
   .hero{ height:68vh; min-height:420px; }
   .hero-inner{ max-width:92vw; }
   .hero-inner h1{ font-size:clamp(28px, 7vw, 46px); }
   .hero-inner p{ font-size:clamp(15px, 3.6vw, 18px); }
 
-  /* Secciones */
-  .section{ width:94%; padding:64px 0; scroll-margin-top:110px; }
-
-  /* TRUST STRIP móvil: columna */
+  /* TRUST STRIP móvil */
   .trust-wrap{
-    display:grid !important; grid-template-columns:1fr !important; gap:14px !important;
-    padding:18px 16px !important; justify-items:center !important;
+    display:grid !important; 
+    grid-template-columns:1fr !important; 
+    gap:14px !important;
+    padding:18px 16px !important; 
+    justify-items:center !important;
   }
 
   .footer-logo{ max-width:180px; max-height:64px; }
 
-  /* WhatsApp posiciones y ocultar popup en móvil */
+  /* WhatsApp popup off en mobile */
   .whatsapp{ bottom:18px; right:16px; }
   .wa-popup{ display:none !important; }
 }
+
 
 /* Reduce motion */
 @media (prefers-reduced-motion: reduce){
   .hero-slider{ transition:none; }
 }
+
 
