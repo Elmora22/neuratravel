@@ -57,15 +57,14 @@ html, body{ max-width:100%; overflow-x:hidden; }
 .contact-item small{ color:#777; font-size:13px; }
 
 /* ===== NAVBAR ===== */
-/* Base (colores) */
 .navbar{
   background:linear-gradient(90deg,#A9DED8 0%,#B4B7BD 100%);
   border-top:3px solid #ffffff40;
   border-bottom:3px solid #ffffff40;
-  z-index:1000;                 /* por encima del contenido */
+  z-index:1000;
 }
 
-/* Menú horizontal (desktop por defecto) */
+/* Menú horizontal (desktop) */
 .nav-list{
   max-width:1200px; margin:auto;
   display:flex; justify-content:center; align-items:center; gap:30px;
@@ -77,7 +76,7 @@ html, body{ max-width:100%; overflow-x:hidden; }
 }
 .nav-list a:hover{ color:#fff; transform:translateY(-1px); }
 
-/* Hamburguesa: oculta en desktop, visible en mobile */
+/* Hamburguesa (oculta en desktop) */
 .nav-toggle{ display:none; }
 
 /* ===== HERO ===== */
@@ -162,15 +161,12 @@ html, body{ max-width:100%; overflow-x:hidden; }
 }
 .trust-wrap{
   max-width:1200px; margin:auto; padding:22px 20px;
-
-  /* Fila en desktop */
   display:flex; align-items:center; justify-content:center; gap:48px;
   flex-wrap:nowrap;
 }
-.trust-item{ display:flex; align-items:center; justify-content:center; text-decoration:none; }
 .trust-item img{
   max-height:80px; max-width:160px; width:auto; height:auto; object-fit:contain;
-  filter:grayscale(30%); opacity:.95; transition:filter .2s ease, opacity .2s ease, transform .2s ease;
+  filter:grayscale(30%); opacity:.95; transition:0.2s ease;
 }
 .trust-item:hover img{ filter:none; opacity:1; transform:scale(1.04); }
 
@@ -182,149 +178,107 @@ html, body{ max-width:100%; overflow-x:hidden; }
 }
 .footer-logo{ display:block; margin:0 auto 12px; width:auto; height:auto; max-width:220px; max-height:85px; object-fit:contain; }
 
-/* ===== WHATSAPP (botón, tooltip y popup) ===== */
-.whatsapp{ position:fixed; bottom:25px; right:25px; z-index:1100; outline:0; }
-.whatsapp img{ width:60px; height:60px; display:block; }
+/* ===== WHATSAPP FLOAT ===== */
+.whatsapp{ position:fixed; bottom:25px; right:25px; z-index:1100; }
+.whatsapp img{ width:60px; height:60px; }
+
+/* Tooltip */
 .whatsapp::after{
   content:'¿Necesitas Ayuda?';
   position:absolute; right:64px; top:6px;
-  background:#fff; color:#1a1a1a; padding:10px 14px; border-radius:18px; font-size:15px; font-weight:600;
-  white-space:nowrap; box-shadow:0 10px 24px rgba(0,0,0,.18);
-  opacity:0; transform:translateX(-8px); pointer-events:none; transition:opacity .18s ease, transform .18s ease;
+  background:#fff; color:#1a1a1a; padding:10px 14px;
+  border-radius:18px; box-shadow:0 10px 24px rgba(0,0,0,.18);
+  opacity:0; transform:translateX(-8px);
+  transition:.18s ease;
+  white-space:nowrap;
 }
 .whatsapp::before{
-  content:''; position:absolute; right:56px; top:18px; width:14px; height:14px; background:#fff; transform:rotate(45deg);
-  border-radius:3px; box-shadow:0 8px 20px rgba(0,0,0,.10); opacity:0; transition:opacity .18s ease;
+  content:''; position:absolute; right:56px; top:18px;
+  width:14px; height:14px; background:#fff; transform:rotate(45deg);
+  border-radius:3px; opacity:0;
+  box-shadow:0 8px 20px rgba(0,0,0,.10);
+  transition:.18s ease;
 }
-.whatsapp:hover::after, .whatsapp:focus-visible::after{ opacity:1; transform:translateX(0); }
-.whatsapp:hover::before, .whatsapp:focus-visible::before{ opacity:1; }
+.whatsapp:hover::after,
+.whatsapp:focus-visible::after,
+.whatsapp:hover::before,
+.whatsapp:focus-visible::before{
+  opacity:1; transform:translateX(0);
+}
 
-/* Popup (solo desktop por JS) */
+/* WhatsApp popup */
 .wa-popup{
-  position:fixed; right:95px; bottom:20px; width:360px; max-width:calc(100vw - 40px);
-  border-radius:22px 22px 28px 28px; background:#f3fffb; box-shadow:0 18px 50px rgba(0,0,0,.28);
-  overflow:hidden; z-index:1200; opacity:0; transform:translateY(10px) scale(.98);
-  pointer-events:none; transition:opacity .22s ease, transform .22s ease;
+  position:fixed; right:95px; bottom:20px;
+  width:360px; max-width:calc(100vw - 40px);
+  border-radius:22px 22px 28px 28px;
+  background:#f3fffb;
+  box-shadow:0 18px 50px rgba(0,0,0,.28);
+  padding-bottom:10px;
+  opacity:0; pointer-events:none;
+  transform:translateY(10px) scale(.98);
+  transition:.22s ease;
 }
-.wa-popup--visible{ opacity:1; transform:translateY(0) scale(1); pointer-events:auto; }
-.wa-popup__header{
-  background:linear-gradient(180deg,#22c65b 0%, #25D366 100%); color:#fff; padding:14px 16px;
-  display:flex; align-items:center; justify-content:space-between;
+.wa-popup--visible{
+  opacity:1; pointer-events:auto;
+  transform:translateY(0) scale(1);
 }
-.wa-popup__title{ display:flex; align-items:center; gap:10px; font-weight:800; letter-spacing:.2px; }
-.wa-popup__close{
-  appearance:none; border:0; background:rgba(0,0,0,.18); color:#fff; border-radius:50%;
-  width:30px; height:30px; font-size:18px; line-height:30px; cursor:pointer; box-shadow:0 2px 6px rgba(0,0,0,.18);
-}
-.wa-popup__body{ padding:16px 16px 18px; background:#f3fffb; }
-.wa-bubble{ display:inline-block; background:#fff; border-radius:16px; padding:12px 14px; margin-bottom:16px; color:#1a1a1a; box-shadow:0 6px 18px rgba(0,0,0,.08); position:relative; }
-.wa-bubble::before{ content:''; position:absolute; left:-6px; top:16px; width:12px; height:12px; background:#fff; border-radius:3px; transform:rotate(45deg); box-shadow:0 6px 16px rgba(0,0,0,.07); }
-.wa-popup__cta{
-  display:inline-flex; align-items:center; gap:12px; background:#25D366; color:#fff; text-decoration:none;
-  border:0; border-radius:999px; padding:14px 20px; font-weight:800; box-shadow:0 10px 22px rgba(37,211,102,.35);
-  transition:transform .15s ease, box-shadow .15s ease, background .15s ease;
-}
-.wa-popup__cta:hover{ transform:translateY(-1px); box-shadow:0 12px 26px rgba(37,211,102,.45); background:#21bf5a; }
-.wa-popup__cta-icon{ width:22px; height:22px; display:inline-block; }
-.wa-popup__cta-icon svg{ display:block; width:22px; height:22px; }
 
-/* ===== Navbar fija SIEMPRE visible en DESKTOP ===== */
+/* ===== DESKTOP NAVBAR (FIJO) ===== */
 @media (min-width:901px){
-  /* nav fijo arriba */
   .navbar{ position:fixed; top:0; left:0; right:0; }
-
-  /* compensar contenido para que no quede oculto */
   body{ padding-top: var(--nav-h); }
-
-  /* el header queda debajo del nav */
-  .header{ margin-top:0; border-bottom:1px solid #eee; }
-
-  /* reforzar layout de desktop */
   .nav-toggle{ display:none !important; }
-  .nav-list{
-    flex-direction:row !important; justify-content:center !important; align-items:center !important;
-    gap:30px !important; padding:14px 10px !important;
-  }
-
-  /* TRUST STRIP: una fila */
-  .trust-wrap{ display:flex !important; flex-wrap:nowrap !important; gap:48px !important; justify-content:center !important; align-items:center !important; }
 }
 
-/* ===== MOBILE (≤900px): menú colapsable con texto "Menú" ===== */
+/* ===== MOBILE (≤900px): MENÚ TEXTO ===== */
 @media (max-width:900px){
 
-  .header{ 
-    overflow:hidden; 
-  }
+  .header{ overflow:hidden; }
 
   .header-top{
     display:grid !important;
-    grid-template-columns:1fr auto !important; /* logo | toggle */
-    align-items:center !important;
+    grid-template-columns:1fr auto !important;
     gap:10px 12px !important;
-    width:100% !important; 
-    max-width:100% !important;
-    padding-left:16px !important; 
-    padding-right:16px !important;
-    box-sizing:border-box !important;
+    width:100% !important;
+    padding:0 16px !important;
   }
 
-  .logo img{ 
-    max-width:60vw; 
-    height:auto; 
-  }
-
-  /* ===== BOTÓN "MENÚ" ===== */
   .nav-toggle{
     display:inline-flex !important;
     justify-self:end;
-    align-items:center; 
+    align-items:center;
     justify-content:center;
-    height:44px; 
+    height:44px;
     min-width:72px;
     padding:0 14px;
     border:1px solid #e5e7eb;
     border-radius:8px;
     background:#fff;
     cursor:pointer;
-
     font-family:'Montserrat', sans-serif;
-    font-size:15px; 
-    font-weight:800; 
-    color:#111; 
-    letter-spacing:.2px;
+    font-size:15px;
+    font-weight:800;
+    color:#111;
   }
 
-  /* Ocultar las barritas antiguas */
   .nav-toggle__bar{ display:none !important; }
 
-  /* Texto por defecto */
   .nav-toggle::after{
     content:'Menú';
     line-height:1;
   }
 
-  /* Texto cuando se abre */
   .nav-toggle[aria-expanded="true"]::after{
     content:'Cerrar ×';
   }
 
-  .nav-toggle:focus-visible{
-    outline:2px solid #25D366;
-    outline-offset:2px;
-  }
-
-  /* ===== NAV PARA MOBILE ===== */
   .navbar{
     position:relative;
     overflow:hidden !important;
     max-height:0 !important;
     transition:max-height .25s ease;
   }
-
-  .navbar.open{ 
-    max-height:420px !important; 
-  }
+  .navbar.open{ max-height:420px !important; }
 
   .nav-list{
     flex-direction:column !important;
@@ -334,58 +288,33 @@ html, body{ max-width:100%; overflow-x:hidden; }
 
   .nav-list a{
     display:block !important;
-    width:100% !important;
-    padding:12px 8px !important;
+    width:100%;
     text-align:center !important;
+    padding:12px 8px !important;
   }
 
-  /* Contacto debajo */
   .contact-info{
     grid-column:1 / -1;
-    width:100%;
-    max-width:100%;
-    padding:6px 0;
-    margin-top:6px;
-    display:flex;
     flex-direction:column;
-    align-items:center;
-    justify-content:center;
     gap:10px;
+    padding:6px 0;
     text-align:center;
-    box-sizing:border-box;
   }
 
-  .contact-item{ width:100%; max-width:520px; margin:0 auto; justify-content:center; gap:10px; }
-  .contact-item > div{ max-width:90vw; }
-  .contact-item strong,
-  .contact-item small{ white-space:normal; word-break:break-word; }
-
-  /* HERO */
-  .hero{ height:68vh; min-height:420px; }
-  .hero-inner{ max-width:92vw; }
-  .hero-inner h1{ font-size:clamp(28px, 7vw, 46px); }
-  .hero-inner p{ font-size:clamp(15px, 3.6vw, 18px); }
-
-  /* TRUST STRIP móvil */
   .trust-wrap{
-    display:grid !important; 
-    grid-template-columns:1fr !important; 
+    display:grid !important;
+    grid-template-columns:1fr !important;
     gap:14px !important;
-    padding:18px 16px !important; 
     justify-items:center !important;
   }
 
   .footer-logo{ max-width:180px; max-height:64px; }
 
-  /* WhatsApp popup off en mobile */
   .whatsapp{ bottom:18px; right:16px; }
   .wa-popup{ display:none !important; }
 }
 
-
-/* Reduce motion */
+/* Reduce Motion */
 @media (prefers-reduced-motion: reduce){
   .hero-slider{ transition:none; }
 }
-
-
