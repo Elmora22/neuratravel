@@ -6,8 +6,7 @@ html{
 }
 :root{
   --divider-icon: url('Imagenes/avion.png');
-  --nav-h: 64px;       /* altura estimada; tu JS la ajusta exacta */
-  --topbar-h: 32px;    /* ALTURA DE LA TOPBAR para ubicar el NAV debajo (ajústala si cambias tipografía/padding) */
+  --nav-h: 64px;            /* altura estimada; el JS la ajusta exacta */
 }
 
 body{
@@ -229,14 +228,16 @@ html, body{ max-width:100%; overflow-x:hidden; }
 .wa-popup__cta-icon{ width:22px; height:22px; display:inline-block; }
 .wa-popup__cta-icon svg{ display:block; width:22px; height:22px; }
 
-/* ===== Navbar fija SIEMPRE visible en DESKTOP,
-         ubicada ENTRE la topbar y el bloque de contacto ===== */
+/* ===== Navbar fija SIEMPRE visible en DESKTOP ===== */
 @media (min-width:901px){
-  /* nav fijo bajo la topbar */
-  .navbar{ position:fixed; top:var(--topbar-h); left:0; right:0; }
+  /* nav fijo arriba */
+  .navbar{ position:fixed; top:0; left:0; right:0; }
 
-  /* el body compensa SOLO la altura del navbar (tu JS setea --nav-h) */
+  /* compensar contenido para que no quede oculto */
   body{ padding-top: var(--nav-h); }
+
+  /* el header queda debajo del nav */
+  .header{ margin-top:0; border-bottom:1px solid #eee; }
 
   /* reforzar layout de desktop */
   .nav-toggle{ display:none !important; }
