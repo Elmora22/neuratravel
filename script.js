@@ -284,7 +284,30 @@ document.addEventListener('DOMContentLoaded', () => {
   document.addEventListener('keydown', (e) => {
     if (e.key === 'Escape') { overBtn = false; overPopup = false; hide(); }
   });
+/* ===== NAVBAR FIXED DESKTOP: calcular altura y compensar contenido ===== */
+(function(){
+  const navbar = document.querySelector('.navbar');
+  if (!navbar) return;
+
+  const isDesktop = () => window.matchMedia('(min-width: 901px)').matches;
+
+  function updateNavHeight(){
+    if (!isDesktop()){
+      // En mobile el navbar no es fixed -> sin padding-top
+      document.documentElement.style.setProperty('--nav-h', '0px');
+      document.body.style.paddingTop = '0px';
+      return;
+    }
+    const h = Math.round(navbar.getBoundingClientRect().height) || 64;
+    document.documentElement.style.setProperty('--nav-h', `${h}px`);
+    document.body.style.paddingTop = `${h}px`;
+  }
+
+  window.addEventListener('load', updateNavHeight);
+  window.addEventListener('resize', updateNavHeight);
+  new ResizeObserver(updateNavHeight).observe(navbar);
 })();
+
 
 
 
