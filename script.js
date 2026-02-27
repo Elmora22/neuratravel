@@ -1,10 +1,10 @@
 document.addEventListener('DOMContentLoaded', () => {
   /* ==========================
-     NAV TOGGLE (hamburguesa)
-     ========================== */
+   NAV TOGGLE (hamburguesa)
+   ========================== */
   const navToggle = document.getElementById('nav-toggle');
   const navbar = document.getElementById('principal-nav');
-
+  const header = document.getElementById('site-header');
   const isMobile = () => window.matchMedia('(max-width: 900px)').matches;
 
   function closeNav() {
@@ -17,20 +17,17 @@ document.addEventListener('DOMContentLoaded', () => {
     navToggle.setAttribute('aria-expanded', 'true');
     navbar.classList.add('open');
   }
-
   if (navToggle && navbar) {
     navToggle.addEventListener('click', () => {
       if (!isMobile()) return; // evita afectar desktop
       const expanded = navToggle.getAttribute('aria-expanded') === 'true';
       expanded ? closeNav() : openNav();
     });
-
     // Cerrar al hacer click en un link (sólo mobile)
     navbar.addEventListener('click', (e) => {
       if (!isMobile()) return;
       if (e.target.matches('a')) closeNav();
     });
-
     // Reset de estado al cambiar el ancho
     const mq = window.matchMedia('(max-width: 900px)');
     const handleMQ = () => {
@@ -45,36 +42,29 @@ document.addEventListener('DOMContentLoaded', () => {
   }
 
   /* ==========================
-     CARRUSEL HERO (auto + swipe)
-     ========================== */
+   CARRUSEL HERO (auto + swipe)
+   ========================== */
   const slider = document.querySelector('.hero-slider');
   const slides = slider ? Array.from(slider.querySelectorAll('.hero-slide')) : [];
-
   if (slider && slides.length > 1) {
     let index = 0;
-    const PAUSA = 3800;      // tiempo visible
-    const TRANS_MS = 700;    // debe matchear CSS
+    const PAUSA = 3800; // tiempo visible
+    const TRANS_MS = 700; // debe matchear CSS
     let timer = null;
-
     const goTo = (i) => {
       index = (i + slides.length) % slides.length;
       slider.style.transform = `translateX(-${index * 100}%)`;
     };
-
     const start = () => { stop(); timer = setInterval(() => goTo(index + 1), PAUSA); };
-    const stop  = () => { if (timer) { clearInterval(timer); timer = null; } };
-
+    const stop = () => { if (timer) { clearInterval(timer); timer = null; } };
     // Estado inicial
     goTo(0);
     start();
-
     // Mantener posición en resize
     window.addEventListener('resize', () => goTo(index));
-
     // Pausa al interactuar
     slider.addEventListener('mouseenter', stop);
     slider.addEventListener('mouseleave', start);
-
     // Respeto por reduce motion
     const rm = window.matchMedia('(prefers-reduced-motion: reduce)');
     const applyRM = () => {
@@ -83,11 +73,9 @@ document.addEventListener('DOMContentLoaded', () => {
     };
     rm.addEventListener?.('change', applyRM);
     applyRM();
-
     // SWIPE táctil / mouse (pointer)
     let startX = null;
     let isPointerDown = false;
-
     const onDown = (e) => {
       isPointerDown = true;
       startX = e.clientX ?? (e.touches && e.touches[0]?.clientX) ?? 0;
@@ -103,29 +91,22 @@ document.addEventListener('DOMContentLoaded', () => {
       else if (dx < -THRESH) goTo(index + 1);
       start();
     };
-
     slider.addEventListener('pointerdown', onDown);
     window.addEventListener('pointerup', onUp);
     slider.addEventListener('touchstart', onDown, { passive: true });
-    slider.addEventListener('touchend', onUp,   { passive: true });
+    slider.addEventListener('touchend', onUp, { passive: true });
   }
 
   /* ==========================
-     SCROLL SUAVE con offset del NAV FIJO
-     ========================== */
+   SCROLL SUAVE con offset del NAV
+   ========================== */
   const soportaSmooth = 'scrollBehavior' in document.documentElement.style;
-
-  const getCSSVarPx = (name, fallback = 0) => {
-    const v = getComputedStyle(document.documentElement).getPropertyValue(name).trim();
-    const n = parseInt(v, 10);
-    return isNaN(n) ? fallback : n;
-  };
-
-  // Usa la altura real del navbar fijo en desktop; en mobile usa un offset cómodo.
   const getOffset = () =>
     isMobile()
-      ? 110
-      : Math.max(getCSSVarPx('--nav-h', 90), 60); // mínimo 60 para no “clavar” 0
+      ? 110           // mobile: margen cómodo por el menú
+      : document.body.classList.contains('nav-fixed')
+        ? (parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'),10) || 0)
+        : 0;          // desktop: si no está fixed, sin offset
 
   function smoothScrollTo(targetY, duration = 600) {
     const startY = window.pageYOffset;
@@ -140,7 +121,6 @@ document.addEventListener('DOMContentLoaded', () => {
     }
     requestAnimationFrame(step);
   }
-
   document.addEventListener('click', (e) => {
     const a = e.target.closest('a[href^="#"]');
     if (!a) return;
@@ -148,64 +128,82 @@ document.addEventListener('DOMContentLoaded', () => {
     if (hash === '#') return;
     const destino = document.querySelector(hash);
     if (!destino) return;
-
     e.preventDefault();
     const rect = destino.getBoundingClientRect();
     const offsetTop = window.pageYOffset + rect.top - getOffset();
-
     if (soportaSmooth) window.scrollTo({ top: offsetTop, behavior: 'smooth' });
     else smoothScrollTo(offsetTop, 650);
   });
 
   /* ==========================
-     NAVBAR FIXED DESKTOP: calcular altura y compensar contenido
-     ========================== */
+   NAVBAR: fijar al scrollear (Desktop) y compensar altura
+   ========================== */
   (function(){
-    const nav = document.querySelector('.navbar');
-    if (!nav) return;
+    if (!header || !navbar) return;
+    const mqDesktop = window.matchMedia('(min-width: 901px)');
+    let triggerY = 0;
 
-    const isDesktop = () => window.matchMedia('(min-width: 901px)').matches;
+    const calcHeights = () => {
+      // Altura real del nav
+      const navH = Math.round(navbar.getBoundingClientRect().height) || 64;
+      document.documentElement.style.setProperty('--nav-h', `${navH}px`);
+      // Punto a partir del cual el nav debe fijarse:
+      // cuando la parte inferior del header supera el top del viewport
+      const headerRect = header.getBoundingClientRect();
+      const headerTopAbs = window.scrollY + headerRect.top;
+      triggerY = headerTopAbs + header.offsetHeight - navH;
+    };
 
-    function updateNavHeight(){
-      if (!isDesktop()){
-        // En mobile el navbar no es fixed -> sin padding-top global
-        document.documentElement.style.setProperty('--nav-h', '0px');
+    const applyFixed = () => {
+      if (!mqDesktop.matches) {
+        // Mobile: nunca fijo
+        navbar.classList.remove('navbar--fixed');
+        document.body.classList.remove('nav-fixed');
         document.body.style.paddingTop = '0px';
         return;
       }
-      // Altura real del nav y aplicar como padding-top del body
-      const h = Math.round(nav.getBoundingClientRect().height) || 64;
-      document.documentElement.style.setProperty('--nav-h', `${h}px`);
-      document.body.style.paddingTop = `${h}px`;
-    }
+      const navH = parseInt(getComputedStyle(document.documentElement).getPropertyValue('--nav-h'),10) || 64;
+      if (window.scrollY >= triggerY) {
+        if (!navbar.classList.contains('navbar--fixed')) {
+          navbar.classList.add('navbar--fixed');
+          document.body.classList.add('nav-fixed');
+          document.body.style.paddingTop = `${navH}px`; // evita “salto” del contenido
+        }
+      } else {
+        if (navbar.classList.contains('navbar--fixed')) {
+          navbar.classList.remove('navbar--fixed');
+          document.body.classList.remove('nav-fixed');
+          document.body.style.paddingTop = '0px';
+        }
+      }
+    };
 
-    // Observa cambios de tamaño del nav (por fuentes, wrap, etc.)
-    try {
-      const ro = new ResizeObserver(updateNavHeight);
-      ro.observe(nav);
-    } catch(e) {
-      // Fallback si ResizeObserver no existe
-      window.addEventListener('resize', updateNavHeight);
-    }
-    window.addEventListener('load', updateNavHeight);
-    updateNavHeight();
+    const onResizeOrLoad = () => { calcHeights(); applyFixed(); };
+    const onScroll = () => { applyFixed(); };
+
+    // Observa cambios en el tamaño del nav (wrap, fuentes, etc.)
+    try { new ResizeObserver(onResizeOrLoad).observe(navbar); } catch {}
+    mqDesktop.addEventListener ? mqDesktop.addEventListener('change', onResizeOrLoad) : mqDesktop.addListener(onResizeOrLoad);
+    window.addEventListener('load', onResizeOrLoad);
+    window.addEventListener('resize', onResizeOrLoad);
+    window.addEventListener('scroll', onScroll, { passive:true });
+
+    // init
+    onResizeOrLoad();
   })();
 
   /* ==========================
-     WHATSAPP: tooltip + popup a los 2s (solo DESKTOP)
-     ========================== */
+   WHATSAPP: tooltip + popup a los 2s (solo DESKTOP)
+   ========================== */
   (function(){
     const waLink = document.querySelector('.whatsapp');
     if (!waLink) return;
-
     if (isMobile()) return; // en móvil no mostramos popup
-
     // Crear popup si no existe
     let popup = document.querySelector('.wa-popup');
     if (!popup) {
       popup = document.createElement('div');
       popup.className = 'wa-popup';
-
       const waHref = waLink.getAttribute('href') || 'https://wa.me/';
       popup.innerHTML = `
         <div class="wa-popup__header">
@@ -224,7 +222,7 @@ document.addEventListener('DOMContentLoaded', () => {
             <div>Hola ♥</div>
             <div>¿En qué podemos ayudarte?</div>
           </div>
-          <a class="wa-popup__cta" href="${waHref}" target="_blank" rel="noopener noreferrer" aria-label="Abrir chat de WhatsApp">
+          ${waHref}
             <span class="wa-popup__cta-icon" aria-hidden="true">
               <svg viewBox="0 0 24 24" fill="none" stroke="white" stroke-width="2" stroke-linecap="round" stroke-linejoin="round" aria-hidden="true">
                 <path d="M20.5 3.5A11 11 0 0 0 3.6 20.4L2 22l1.9-.5A11 11 0 1 0 20.5 3.5Z"/>
@@ -237,73 +235,37 @@ document.addEventListener('DOMContentLoaded', () => {
       `;
       document.body.appendChild(popup);
     }
-
-    const SHOW_DELAY = 2000; // 2s
+    const SHOW_DELAY = 2000;
     const HIDE_DELAY = 180;
-
     let showTimer = null;
     let hideTimer = null;
     let overBtn = false;
     let overPopup = false;
-
     const show = () => popup.classList.add('wa-popup--visible');
     const hide = () => popup.classList.remove('wa-popup--visible');
-
     const scheduleShow = () => { clearTimeout(showTimer); showTimer = setTimeout(show, SHOW_DELAY); };
     const scheduleHide = () => {
       clearTimeout(hideTimer);
       hideTimer = setTimeout(() => { if (!overBtn && !overPopup) hide(); }, HIDE_DELAY);
     };
-
     waLink.addEventListener('mouseenter', () => { overBtn = true; scheduleShow(); });
     waLink.addEventListener('mouseleave', () => { overBtn = false; scheduleHide(); });
-    waLink.addEventListener('focus',      () => { overBtn = true; scheduleShow(); });
-    waLink.addEventListener('blur',       () => { overBtn = false; scheduleHide(); });
-
+    waLink.addEventListener('focus', () => { overBtn = true; scheduleShow(); });
+    waLink.addEventListener('blur', () => { overBtn = false; scheduleHide(); });
     popup.addEventListener('mouseenter', () => { overPopup = true; clearTimeout(hideTimer); });
     popup.addEventListener('mouseleave', () => { overPopup = false; scheduleHide(); });
-
     popup.querySelector('.wa-popup__close').addEventListener('click', () => {
       overBtn = false; overPopup = false;
       hide(); clearTimeout(showTimer); clearTimeout(hideTimer);
     });
-
     document.addEventListener('click', (e) => {
       if (!popup.classList.contains('wa-popup--visible')) return;
       const dentroPopup = e.target.closest('.wa-popup');
       const enBoton = e.target.closest('.whatsapp');
       if (!dentroPopup && !enBoton) { overBtn = false; overPopup = false; hide(); }
     });
-
     document.addEventListener('keydown', (e) => {
       if (e.key === 'Escape') { overBtn = false; overPopup = false; hide(); }
     });
-  })();
-
-  /* ==========================
-     NAVBAR FIXED DESKTOP: calcular altura y compensar contenido
-     (bloque adicional por si este archivo se carga antes del CSS)
-     ========================== */
-  (function(){
-    const navbar = document.querySelector('.navbar');
-    if (!navbar) return;
-
-    const isDesktop = () => window.matchMedia('(min-width: 901px)').matches;
-
-    function updateNavHeight(){
-      if (!isDesktop()){
-        document.documentElement.style.setProperty('--nav-h', '0px');
-        document.body.style.paddingTop = '0px';
-        return;
-      }
-      const h = Math.round(navbar.getBoundingClientRect().height) || 64;
-      document.documentElement.style.setProperty('--nav-h', `${h}px`);
-      document.body.style.paddingTop = `${h}px`;
-    }
-
-    window.addEventListener('load', updateNavHeight);
-    window.addEventListener('resize', updateNavHeight);
-    try { new ResizeObserver(updateNavHeight).observe(navbar); } catch {}
-    updateNavHeight();
   })();
 });
